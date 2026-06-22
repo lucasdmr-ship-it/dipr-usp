@@ -24,15 +24,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .progress-meta{display:flex;justify-content:space-between;font-size:12px;opacity:.85;margin-bottom:5px}
 .progress-bar-bg{background:rgba(255,255,255,.2);border-radius:6px;height:7px}
 .progress-bar{background:#4ade80;border-radius:6px;height:7px;transition:width .4s}
-.today-strip{background:#162d4a;color:#fff;padding:8px 20px;font-size:12px;display:flex;justify-content:space-between}
+.today-strip{background:#162d4a;color:#fff;padding:8px 20px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;padding-bottom:var(--safe-bottom);z-index:100}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px;border:none;background:none;cursor:pointer;color:var(--muted);font-size:10px;gap:3px;transition:color .15s}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px;border:none;background:none;cursor:pointer;color:var(--muted);font-size:10px;gap:3px}
 .nav-btn.active{color:var(--navy)}
 .nav-icon{font-size:20px}
 .main{padding:16px;max-width:600px;margin:0 auto}
 .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
 .chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border);background:#fff;cursor:pointer;color:var(--text);transition:all .15s}
+.chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border);background:#fff;cursor:pointer;color:var(--text)}
 .chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 .scroll-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .scroll-row::-webkit-scrollbar{display:none}
@@ -40,18 +40,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .day-chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 .day-chip.done{background:#d1fae5;border-color:#6ee7b7}
 .day-chip.partial{background:#fef3c7;border-color:#fcd34d}
-.task-item{display:flex;align-items:flex-start;gap:12px;padding:12px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none}
+.day-chip.overloaded{background:#fee2e2;border-color:#fca5a5}
+.task-item{display:flex;align-items:flex-start;gap:12px;padding:12px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;-webkit-user-select:none;user-select:none}
 .task-item.done{background:#f0fdf4;border-color:#86efac}
+.task-item.remaneged{background:#fefce8;border-color:#fde047;border-style:dashed}
 .task-item:active{opacity:.85}
-.task-check{width:24px;height:24px;border-radius:7px;border:2px solid #d1d5db;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;font-size:13px;font-weight:700;color:#fff}
+.task-check{width:24px;height:24px;border-radius:7px;border:2px solid #d1d5db;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;font-size:13px;font-weight:700;color:#fff}
 .task-check.checked{background:var(--green);border-color:var(--green)}
 .task-body{flex:1;min-width:0}
-.task-meta{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+.task-meta{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap}
 .task-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;flex-shrink:0}
 .task-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.task-num.remaneged-num{background:#ca8a04}
 .task-min{font-size:11px;color:var(--muted)}
 .task-text{font-size:13px;line-height:1.45;color:var(--text)}
 .task-item.done .task-text{text-decoration:line-through;color:var(--muted)}
+.task-origin{font-size:10px;color:#ca8a04;margin-top:2px}
 .badge-aula{background:#ede9fe;color:#7c3aed}
 .badge-leitura{background:#e0f2fe;color:#0369a1}
 .badge-fichamento{background:#d1fae5;color:#065f46}
@@ -60,6 +64,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .badge-revisao{background:#f3f4f6;color:#374151}
 .ordem-hint{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#0369a1;line-height:1.5}
 .flex-note{margin-top:12px;padding:10px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;font-size:12px;color:#92400e;line-height:1.5}
+.carga-bar{margin-top:10px;padding:8px 12px;border-radius:8px;font-size:12px;line-height:1.5}
+.carga-normal{background:#f0fdf4;border:1px solid #86efac;color:#065f46}
+.carga-alta{background:#fef3c7;border:1px solid #fcd34d;color:#92400e}
+.carga-critica{background:#fee2e2;border:1px solid #fca5a5;color:#b91c1c}
 .dia-fase{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 .dia-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
 .dia-title{font-size:18px;font-weight:700;color:var(--navy)}
@@ -74,7 +82,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .week-sub{font-size:11px;color:var(--muted);margin-top:1px}
 .week-pct{font-size:16px;font-weight:700}
 .bar{background:#e5e7eb;border-radius:5px;height:6px;margin-bottom:10px}
-.bar-fill{border-radius:5px;height:6px;transition:width .4s}
+.bar-fill{border-radius:5px;height:6px}
 .metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
 .metric-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center}
 .metric-val{font-size:20px;font-weight:700}
@@ -88,6 +96,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tema-bar-wrap{height:4px;background:#e5e7eb;border-radius:4px;margin-top:5px}
 .tema-bar{height:4px;border-radius:4px}
 .section-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+
+/* MODAL DE REMANEJO */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.modal-box{background:#fff;border-radius:20px 20px 0 0;padding:24px 20px calc(24px + var(--safe-bottom));width:100%;max-width:600px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5}
+.modal-option{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1.5px solid var(--border);border-radius:12px;margin-bottom:10px;cursor:pointer;background:#fff}
+.modal-option:active{background:#f8fafc}
+.modal-option.selected{border-color:var(--navy);background:#eff6ff}
+.modal-option-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.modal-option-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.modal-option-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.modal-task-list{background:#f8fafc;border-radius:8px;padding:10px 12px;margin-bottom:16px;font-size:12px;color:var(--text);max-height:160px;overflow-y:auto}
+.modal-task-item{padding:4px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:flex-start}
+.modal-task-item:last-child{border-bottom:none}
+.modal-btn-row{display:flex;gap:10px;margin-top:6px}
+.modal-btn{flex:1;padding:13px;border-radius:10px;border:none;font-size:14px;font-weight:600;cursor:pointer}
+.modal-btn-primary{background:var(--navy);color:#fff}
+.modal-btn-secondary{background:#f1f5f9;color:var(--text)}
+.modal-btn:active{opacity:.85}
+
+/* BANNER DE ALERTA */
+.alert-banner{padding:10px 14px;border-radius:10px;margin-bottom:12px;font-size:12px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
+.alert-warning{background:#fef3c7;border:1px solid #fcd34d;color:#92400e}
+.alert-danger{background:#fee2e2;border:1px solid #fca5a5;color:#b91c1c}
+.alert-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a5f}
+.alert-icon{font-size:16px;flex-shrink:0;margin-top:1px}
 </style>
 </head>
 <body>
@@ -95,7 +130,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="header">
   <div class="header-eyebrow">Mestrado · DIPr · USP</div>
   <div class="header-title">Roteiro de Estudos</div>
-  <div class="header-sub">22 jun → 02 ago 2026</div>
+  <div class="header-sub">23 jun — 02 ago 2026</div>
   <div class="progress-wrap">
     <div class="progress-meta">
       <span id="hdr-feitos">carregando...</span>
@@ -107,10 +142,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<div class="today-strip" id="today-strip">Carregando...</div>
+<div class="today-strip" id="today-strip">
+  <span id="strip-txt">Carregando...</span>
+  <button id="strip-remanejo-btn" onclick="abrirModalDiaAtivo()" style="display:none;background:#b91c1c;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer">Remanejo pendente</button>
+</div>
 
 <div class="main" id="main-content">
   <p style="color:#6b7280;font-size:14px;padding:20px 0">Carregando roteiro...</p>
+</div>
+
+<!-- MODAL DE REMANEJO -->
+<div class="modal-overlay" id="modal" style="display:none" onclick="fecharModalFora(event)">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-title" id="modal-title">Tarefas nao concluidas</div>
+    <div class="modal-sub" id="modal-sub"></div>
+    <div class="modal-task-list" id="modal-task-list"></div>
+    <div id="modal-opcoes"></div>
+    <div class="modal-btn-row">
+      <button class="modal-btn modal-btn-secondary" onclick="fecharModal()">Cancelar</button>
+      <button class="modal-btn modal-btn-primary" id="modal-confirmar" onclick="confirmarRemanejo()">Confirmar remanejo</button>
+    </div>
+  </div>
 </div>
 
 <nav class="bottom-nav">
@@ -121,7 +173,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <span class="nav-icon">📊</span><span>Semanas</span>
   </button>
   <button class="nav-btn" id="btn-relatorio" onclick="switchTab('relatorio')">
-    <span class="nav-icon">📈</span><span>Relatório</span>
+    <span class="nav-icon">📈</span><span>Relatorio</span>
   </button>
   <button class="nav-btn" id="btn-temas" onclick="switchTab('temas')">
     <span class="nav-icon">🎯</span><span>Temas</span>
@@ -129,23 +181,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </nav>
 
 <script>
-// ─── STORAGE SEGURO (funciona mesmo sem localStorage) ─────────────────────
-var _memStorage = {};
-var storage = {
-  get: function(k){ try{ var v=localStorage.getItem(k); return v; }catch(e){ return _memStorage[k]||null; } },
-  set: function(k,v){ try{ localStorage.setItem(k,v); }catch(e){ _memStorage[k]=v; } }
+// ─── STORAGE ─────────────────────────────────────────────────────────────────
+var _mem = {};
+var store = {
+  get: function(k){ try{ var v=localStorage.getItem(k); return v; }catch(e){ return _mem[k]||null; } },
+  set: function(k,v){ try{ localStorage.setItem(k,v); }catch(e){ _mem[k]=v; } }
 };
 
-// ─── DADOS ────────────────────────────────────────────────────────────────
+// ─── DADOS BASE ───────────────────────────────────────────────────────────────
 var TEMAS = {
-  A:{label:"Normas de conflito (indiretas/diretas/conexão)",prob:95,cor:"#b91c1c",bg:"#fee2e2"},
+  A:{label:"Normas de conflito (indiretas/diretas/conexao)",prob:95,cor:"#b91c1c",bg:"#fee2e2"},
   B:{label:"Reenvio (4 modelos + art. 16 LINDB)",prob:85,cor:"#b91c1c",bg:"#fee2e2"},
-  C:{label:"Princípio da proximidade / Cláusula de exceção",prob:85,cor:"#b91c1c",bg:"#fee2e2"},
+  C:{label:"Principio da proximidade / Clausula de excecao",prob:85,cor:"#b91c1c",bg:"#fee2e2"},
   D:{label:"Autonomia conflitual vs. autonomia privada",prob:80,cor:"#b91c1c",bg:"#fee2e2"},
-  E:{label:"DIPr substancial / Normas de aplicação imediata",prob:75,cor:"#d97706",bg:"#fef3c7"},
-  F:{label:"DIPúblico x DIPr (distincao e relacao)",prob:70,cor:"#d97706",bg:"#fef3c7"},
+  E:{label:"DIPr substancial / Normas de aplicacao imediata",prob:75,cor:"#d97706",bg:"#fef3c7"},
+  F:{label:"DIPu blico x DIPr",prob:70,cor:"#d97706",bg:"#fef3c7"},
   G:{label:"Objetos da disciplina (trad. germ./ang./francesa)",prob:65,cor:"#d97706",bg:"#fef3c7"},
-  H:{label:"Lacunas intersistemicas (Monaco 2019 Parte 1)",prob:60,cor:"#d97706",bg:"#fef3c7"},
+  H:{label:"Lacunas intersistemicas (Monaco 2019)",prob:60,cor:"#d97706",bg:"#fef3c7"},
   I:{label:"Controle de constitucionalidade da lei estrangeira",prob:50,cor:"#0369a1",bg:"#e0f2fe"},
   J:{label:"Familia / Regime matrimonial / Sucessoes",prob:45,cor:"#0369a1",bg:"#e0f2fe"},
   K:{label:"Jurisdicao internacional e cooperacao juridica",prob:40,cor:"#0369a1",bg:"#e0f2fe"}
@@ -160,266 +212,312 @@ var TIPO = {
   revisao:   {label:"Revisao",cls:"badge-revisao"}
 };
 
-// ROTEIRO — ordem corrigida: Aula > Leitura > Fichamento > Pratica > Revisao
-var ROTEIRO = [
-  {id:1,data:"22/06 (Seg)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["A","G"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M1 Aula 1 (1h14) — Conceito, objeto e metodo do DIPr"},
-    {o:2,min:60,tipo:"leitura",t:"Dolinger/Tiburcio 16a ed. — Cap. I e II (conceito, objeto, tradicoes)"},
-    {o:3,min:60,tipo:"fichamento",t:"Fichar: as 3 tradicoes (germanica, ang.-sax., francesa) e o que cada uma inclui como objeto"}
+// Carga base em minutos por tipo de dia
+var CARGA_BASE = { util: 180, fds: 360 };
+
+var ROTEIRO_BASE = [
+  {id:1,data:"23/06 (Ter)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["A","G"],tarefas:[
+    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 1 (1h14) — Conceito, objeto e metodo do DIPr"},
+    {o:2,min:60,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio 16a ed. — Cap. I e II (conceito, objeto, tradicoes)"},
+    {o:3,min:60,tipo:"fichamento",sim:false,prob:70,t:"Fichar: as 3 tradicoes (germanica, ang.-sax., francesa) e o que cada uma inclui como objeto"}
   ]},
-  {id:2,data:"23/06 (Ter)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["A"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M1 Aula 2 (1h28) — Fontes do DIPr (assistir 1h e parar)"},
-    {o:2,min:60,tipo:"leitura",t:"Dolinger/Tiburcio — Cap. VII (normas diretas vs. indiretas)"},
-    {o:3,min:60,tipo:"fichamento",t:"Fichar: norma indireta, elemento de conexao (Monaco 2019 p.59 nota 92), Francescakis"}
+  {id:2,data:"24/06 (Qua)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["A"],tarefas:[
+    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 2 (1h28) — Fontes do DIPr (assistir 1h e parar)"},
+    {o:2,min:60,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio — Cap. VII (normas diretas vs. indiretas)"},
+    {o:3,min:60,tipo:"fichamento",sim:false,prob:70,t:"Fichar: norma indireta, elemento de conexao (Monaco 2019 p.59 nota 92), Francescakis"}
   ]},
   {id:3,data:"24/06 (Qua)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["A","G"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M1 Aula 3 (1h30) — Fundamentos do DIPr (assistir 1h)"},
-    {o:2,min:75,tipo:"leitura",t:"Monaco 2013 — Cap. introdutorio e p. 69 (normas de aplicacao imediata)"},
-    {o:3,min:45,tipo:"pratica",t:"Prova 2022: ler enunciado + espelho e identificar como a banca usou Monaco 2013"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 3 (1h30) — Fundamentos do DIPr (assistir 1h)"},
+    {o:2,min:75,tipo:"leitura",sim:false,prob:85,t:"Monaco 2013 — Cap. introdutorio e p. 69 (normas de aplicacao imediata)"},
+    {o:3,min:45,tipo:"pratica",sim:false,prob:80,t:"Prova 2022: ler enunciado + espelho e identificar como a banca usou Monaco 2013"}
   ]},
   {id:4,data:"25/06 (Qui)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["A","H"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M1 Aula 4 (1h30) — Qualificacao e normas de conexao (assistir 1h)"},
-    {o:2,min:90,tipo:"leitura",t:"Monaco 2019 (1a Parte): estrutura geral, norma de conflito, elemento de conexao"},
-    {o:3,min:30,tipo:"fichamento",t:"Fichar: diferenca entre conexao (normativo) e fato nacional/estrangeiro"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 4 (1h30) — Qualificacao e normas de conexao (assistir 1h)"},
+    {o:2,min:90,tipo:"leitura",sim:false,prob:85,t:"Monaco 2019 (1a Parte): estrutura geral, norma de conflito, elemento de conexao"},
+    {o:3,min:30,tipo:"fichamento",sim:false,prob:70,t:"Fichar: diferenca entre conexao (normativo) e fato nacional/estrangeiro"}
   ]},
   {id:5,data:"26/06 (Sex)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["H"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M1 Aula 5 (1h34) — Reenvio — PRIORIDADE MAXIMA"},
-    {o:2,min:90,tipo:"leitura",t:"Monaco 2019 — clausula de excecao (pp. 31-32 e entorno)"},
-    {o:3,min:30,tipo:"fichamento",t:"Fichar: clausula de excecao — atribuicao geral vs. restrita"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:90,t:"Monaco M1 Aula 5 (1h34) — Reenvio — PRIORIDADE MAXIMA"},
+    {o:2,min:90,tipo:"leitura",sim:false,prob:85,t:"Monaco 2019 — clausula de excecao (pp. 31-32 e entorno)"},
+    {o:3,min:30,tipo:"fichamento",sim:false,prob:70,t:"Fichar: clausula de excecao — atribuicao geral vs. restrita"}
   ]},
   {id:6,data:"27/06 (Sab)",sem:1,tipo:"fds",fase:"Fase 1 — Fundamentos",temas:["B"],tarefas:[
-    {o:1,min:90,tipo:"leitura",t:"Dolinger/Tiburcio — Cap. Reenvio (conceito, especies, posicao brasileira)"},
-    {o:2,min:90,tipo:"leitura",t:"Monaco 2019 — reenvio e as duas dualidades do art. 16 LINDB"},
-    {o:3,min:60,tipo:"pratica",t:"Prova 2024: rascunhar resposta sobre os 4 modelos de reenvio"},
-    {o:4,min:60,tipo:"pratica",t:"Comparar com espelho 2024: identificar o que faltou nos criterios"},
-    {o:5,min:60,tipo:"revisao",t:"Revisar fichas da semana 1 e montar mapa mental"}
+    {o:1,min:90,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio — Cap. Reenvio (conceito, especies, posicao brasileira)"},
+    {o:2,min:90,tipo:"leitura",sim:false,prob:85,t:"Monaco 2019 — reenvio e as duas dualidades do art. 16 LINDB"},
+    {o:3,min:60,tipo:"pratica",sim:false,prob:85,t:"Prova 2024: rascunhar resposta sobre os 4 modelos de reenvio"},
+    {o:4,min:60,tipo:"pratica",sim:false,prob:80,t:"Comparar com espelho 2024: identificar o que faltou nos criterios"},
+    {o:5,min:60,tipo:"revisao",sim:false,prob:60,t:"Revisar fichas da semana 1 e montar mapa mental"}
   ]},
   {id:7,data:"28/06 (Dom)",sem:1,tipo:"fds",fase:"Fase 1 — Fundamentos",temas:["B","C"],tarefas:[
-    {o:1,min:90,tipo:"aula",t:"Monaco M1 Aula 5 (revisao) + Aula 6 (questao previa, 1h24)"},
-    {o:2,min:90,tipo:"leitura",t:"Dolinger/Tiburcio — principio da proximidade / lei mais proxima"},
-    {o:3,min:60,tipo:"pratica",t:"Prova 2023 Q1: rascunhar resposta (institutos + valores axiologicos)"},
-    {o:4,min:60,tipo:"pratica",t:"Comparar com espelho 2023: checar pontuacao em Dolinger, Monaco e Patrao"},
-    {o:5,min:60,tipo:"revisao",t:"Relatorio pessoal Semana 1: o que dominei / precisei revisar / ajustes"}
+    {o:1,min:90,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 5 (revisao) + Aula 6 (questao previa, 1h24)"},
+    {o:2,min:90,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio — principio da proximidade / lei mais proxima"},
+    {o:3,min:60,tipo:"pratica",sim:false,prob:80,t:"Prova 2023 Q1: rascunhar resposta (institutos + valores axiologicos)"},
+    {o:4,min:60,tipo:"pratica",sim:false,prob:80,t:"Comparar com espelho 2023: checar pontuacao em Dolinger, Monaco e Patrao"},
+    {o:5,min:60,tipo:"revisao",sim:false,prob:55,t:"Relatorio pessoal Semana 1: dominei / precisei revisar / ajustes"}
   ]},
   {id:8,data:"29/06 (Seg)",sem:2,tipo:"util",fase:"Fase 2 — Alta Probabilidade",temas:["B","C"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M1 Aula 7 (1h18) — Ordem publica e fraude a lei"},
-    {o:2,min:60,tipo:"leitura",t:"Monaco 2019 — releitura reenvio: posicao brasileira (art. 16 LINDB), critica"},
-    {o:3,min:60,tipo:"pratica",t:"Simulado rapido: escrever em 40 min sobre reenvio sem consulta; depois corrigir"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 7 (1h18) — Ordem publica e fraude a lei"},
+    {o:2,min:60,tipo:"leitura",sim:false,prob:85,t:"Monaco 2019 — releitura reenvio: posicao brasileira (art. 16 LINDB), critica"},
+    {o:3,min:60,tipo:"pratica",sim:false,prob:80,t:"Simulado rapido: escrever em 40 min sobre reenvio sem consulta; depois corrigir"}
   ]},
   {id:9,data:"30/06 (Ter)",sem:2,tipo:"util",fase:"Fase 2 — Alta Probabilidade",temas:["C","D"],tarefas:[
-    {o:1,min:90,tipo:"leitura",t:"Coletanea Monaco/Loula — Cap. 15 (Patrao: escolha tacita da lei aplicavel ao regime matrimonial)"},
-    {o:2,min:60,tipo:"fichamento",t:"Fichar: autonomia conflitual vs. autonomia privada; designacao expressa vs. tacita"},
-    {o:3,min:30,tipo:"pratica",t:"Reler espelho 2023 Q2: criterios de pontuacao sobre autonomia"}
+    {o:1,min:90,tipo:"leitura",sim:false,prob:85,t:"Coletanea Monaco/Loula — Cap. 15 (Patrao: escolha tacita da lei aplicavel ao regime matrimonial)"},
+    {o:2,min:60,tipo:"fichamento",sim:false,prob:75,t:"Fichar: autonomia conflitual vs. autonomia privada; designacao expressa vs. tacita"},
+    {o:3,min:30,tipo:"pratica",sim:false,prob:75,t:"Reler espelho 2023 Q2: criterios de pontuacao sobre autonomia"}
   ]},
   {id:10,data:"01/07 (Qua)",sem:2,tipo:"util",fase:"Fase 2 — Alta Probabilidade",temas:["D","C"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M2 T4 (38min) + T5 (1h04) — Lei aplicavel as obrigacoes"},
-    {o:2,min:60,tipo:"leitura",t:"Dolinger/Tiburcio — Cap. II penultimo paragrafo (lei mais proxima) + trecho autonomia conflitual"},
-    {o:3,min:60,tipo:"pratica",t:"Prova 2023 Q2: escrever resposta completa sobre autonomia conflitual"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M2 T4 (38min) + T5 (1h04) — Lei aplicavel as obrigacoes"},
+    {o:2,min:60,tipo:"leitura",sim:false,prob:80,t:"Dolinger/Tiburcio — Cap. II (lei mais proxima) + autonomia conflitual"},
+    {o:3,min:60,tipo:"pratica",sim:false,prob:80,t:"Prova 2023 Q2: escrever resposta completa sobre autonomia conflitual"}
   ]},
   {id:11,data:"02/07 (Qui)",sem:2,tipo:"util",fase:"Fase 2 — Alta Probabilidade",temas:["E"],tarefas:[
-    {o:1,min:60,tipo:"leitura",t:"Monaco 2013 — p. 69 (normas de aplicacao imediata) + contexto do capitulo"},
-    {o:2,min:60,tipo:"leitura",t:"Dolinger/Tiburcio — Cap. VII item normas diretas (normas substanciais)"},
-    {o:3,min:60,tipo:"pratica",t:"Prova 2022 Q(c): escrever resposta sobre DIPr substancial com Francescakis"}
+    {o:1,min:60,tipo:"leitura",sim:false,prob:75,t:"Monaco 2013 — p. 69 (normas de aplicacao imediata) + contexto do capitulo"},
+    {o:2,min:60,tipo:"leitura",sim:false,prob:75,t:"Dolinger/Tiburcio — Cap. VII item normas diretas (normas substanciais)"},
+    {o:3,min:60,tipo:"pratica",sim:false,prob:75,t:"Prova 2022 Q(c): escrever resposta sobre DIPr substancial com Francescakis"}
   ]},
   {id:12,data:"03/07 (Sex)",sem:2,tipo:"util",fase:"Fase 2 — Alta Probabilidade",temas:["F"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M5 Aula 1 (1h24) — Introducao ao DIPu blico (assistir 60min)"},
-    {o:2,min:60,tipo:"leitura",t:"Dolinger/Tiburcio — Cap. introdutorio (relacao DIPu blico x DIPr)"},
-    {o:3,min:60,tipo:"pratica",t:"Prova 2025: mapear os 4 eixos de distincao que valem pontos no espelho"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:70,t:"Monaco M5 Aula 1 (1h24) — Introducao ao DIPu blico (assistir 60min)"},
+    {o:2,min:60,tipo:"leitura",sim:false,prob:70,t:"Dolinger/Tiburcio — Cap. introdutorio (relacao DIPu blico x DIPr)"},
+    {o:3,min:60,tipo:"pratica",sim:false,prob:70,t:"Prova 2025: mapear os 4 eixos de distincao que valem pontos no espelho"}
   ]},
   {id:13,data:"04/07 (Sab)",sem:2,tipo:"fds",fase:"Fase 2 — Alta Probabilidade",temas:["F","G"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M5 Aula 2 (2h07) — Fontes DIPu blico (assistir 60min)"},
-    {o:2,min:90,tipo:"leitura",t:"Accioly/Casella 27a ed. — caps. introdutorios (conceito e fontes do DIPu blico)"},
-    {o:3,min:60,tipo:"pratica",t:"Simulado 2025 Q(a): escrever pontos de contato DIPu blico/DIPr sem consulta"},
-    {o:4,min:60,tipo:"pratica",t:"Simulado 2025 Q(b): distincao pelos 4 eixos do espelho (historico, fontes, relacoes, objetivos)"},
-    {o:5,min:90,tipo:"revisao",t:"Revisao geral semana 2: reler todos os fichamentos"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:70,t:"Monaco M5 Aula 2 (2h07) — Fontes DIPu blico (assistir 60min)"},
+    {o:2,min:90,tipo:"leitura",sim:false,prob:65,t:"Accioly/Casella 27a ed. — caps. introdutorios (conceito e fontes do DIPu blico)"},
+    {o:3,min:60,tipo:"pratica",sim:false,prob:70,t:"Simulado 2025 Q(a): pontos de contato DIPu blico/DIPr sem consulta"},
+    {o:4,min:60,tipo:"pratica",sim:false,prob:70,t:"Simulado 2025 Q(b): distincao pelos 4 eixos do espelho"},
+    {o:5,min:90,tipo:"revisao",sim:false,prob:55,t:"Revisao geral semana 2: reler todos os fichamentos"}
   ]},
   {id:14,data:"05/07 (Dom)",sem:2,tipo:"fds",fase:"Fase 2 — Alta Probabilidade",temas:["A","B","C","D"],tarefas:[
-    {o:1,min:120,tipo:"leitura",t:"Coletanea Monaco/Loula — Cap. 1 (panorama) e Cap. 9 (autonomia conflitual na UE)"},
-    {o:2,min:120,tipo:"simulado",t:"SIMULADO 1 (2h): questao integrando normas de conflito + reenvio + clausula de excecao"},
-    {o:3,min:60,tipo:"pratica",t:"Autocorrecao contra espelhos 2022-2024: identificar pontos perdidos"},
-    {o:4,min:60,tipo:"revisao",t:"Relatorio Semana 2: temas dominados, lacunas, ajuste de ritmo"}
+    {o:1,min:120,tipo:"leitura",sim:false,prob:85,t:"Coletanea Monaco/Loula — Cap. 1 (panorama) e Cap. 9 (autonomia conflitual na UE)"},
+    {o:2,min:120,tipo:"simulado",sim:true,prob:99,t:"SIMULADO 1 (2h): normas de conflito + reenvio + clausula de excecao"},
+    {o:3,min:60,tipo:"pratica",sim:false,prob:85,t:"Autocorrecao contra espelhos 2022-2024: identificar pontos perdidos"},
+    {o:4,min:60,tipo:"revisao",sim:false,prob:60,t:"Relatorio Semana 2: temas dominados, lacunas, ajuste de ritmo"}
   ]},
   {id:15,data:"06/07 (Seg)",sem:3,tipo:"util",fase:"Fase 3 — Coletanea",temas:["D","C"],tarefas:[
-    {o:1,min:90,tipo:"leitura",t:"Coletanea Monaco/Loula — Cap. 10 (regimes matrimoniais e autonomia conflitual na UE)"},
-    {o:2,min:60,tipo:"fichamento",t:"Fichar: conexao cap.10 com autonomia conflitual (Patrao/cap.15)"},
-    {o:3,min:30,tipo:"pratica",t:"Escrever paragrafo de 150 palavras sobre autonomia conflitual citando cap. 15 e Dolinger"}
+    {o:1,min:90,tipo:"leitura",sim:false,prob:80,t:"Coletanea Monaco/Loula — Cap. 10 (regimes matrimoniais e autonomia conflitual na UE)"},
+    {o:2,min:60,tipo:"fichamento",sim:false,prob:70,t:"Fichar: conexao cap.10 com autonomia conflitual (Patrao/cap.15)"},
+    {o:3,min:30,tipo:"pratica",sim:false,prob:70,t:"Escrever paragrafo de 150 palavras sobre autonomia conflitual citando cap. 15 e Dolinger"}
   ]},
   {id:16,data:"07/07 (Ter)",sem:3,tipo:"util",fase:"Fase 3 — Coletanea",temas:["E","H"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M1 Aula 7 (revisao) — Ordem publica e normas de aplicacao imediata"},
-    {o:2,min:90,tipo:"leitura",t:"Coletanea Monaco/Loula — Cap. 14 (questao previa) e Cap. 17 (ordem publica)"},
-    {o:3,min:30,tipo:"fichamento",t:"Fichar: ordem publica como limite ao direito estrangeiro + interacao com clausula de excecao"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:70,t:"Monaco M1 Aula 7 (revisao) — Ordem publica e normas de aplicacao imediata"},
+    {o:2,min:90,tipo:"leitura",sim:false,prob:70,t:"Coletanea Monaco/Loula — Cap. 14 (questao previa) e Cap. 17 (ordem publica)"},
+    {o:3,min:30,tipo:"fichamento",sim:false,prob:60,t:"Fichar: ordem publica como limite ao direito estrangeiro + clausula de excecao"}
   ]},
   {id:17,data:"08/07 (Qua)",sem:3,tipo:"util",fase:"Fase 3 — Coletanea",temas:["H"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M1 Aula 6 (1h24) — Questao previa e adaptacao"},
-    {o:2,min:90,tipo:"leitura",t:"Monaco 2019 — Parte 1 completa: releitura critica com foco em lacunas intersistemicas"},
-    {o:3,min:30,tipo:"fichamento",t:"Fichar: lacunas intersistemicas — o que sao, como se resolvem"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:70,t:"Monaco M1 Aula 6 (1h24) — Questao previa e adaptacao"},
+    {o:2,min:90,tipo:"leitura",sim:false,prob:60,t:"Monaco 2019 — Parte 1 completa: releitura critica com foco em lacunas intersistemicas"},
+    {o:3,min:30,tipo:"fichamento",sim:false,prob:55,t:"Fichar: lacunas intersistemicas — o que sao, como se resolvem"}
   ]},
   {id:18,data:"09/07 (Qui)",sem:3,tipo:"util",fase:"Fase 3 — Coletanea",temas:["I"],tarefas:[
-    {o:1,min:90,tipo:"leitura",t:"Monaco 2013 — controle de constitucionalidade da lei estrangeira (alem de p. 69)"},
-    {o:2,min:60,tipo:"leitura",t:"Coletanea Monaco/Loula — Cap. 21 e Cap. 22 (constitucionalizacao do DIPr)"},
-    {o:3,min:30,tipo:"fichamento",t:"Fichar: fundamento do controle constitucional + vinculo com normas de aplicacao imediata"}
+    {o:1,min:90,tipo:"leitura",sim:false,prob:50,t:"Monaco 2013 — controle de constitucionalidade da lei estrangeira"},
+    {o:2,min:60,tipo:"leitura",sim:false,prob:50,t:"Coletanea Monaco/Loula — Cap. 21 e Cap. 22 (constitucionalizacao do DIPr)"},
+    {o:3,min:30,tipo:"fichamento",sim:false,prob:45,t:"Fichar: fundamento do controle constitucional + vinculo com normas de aplicacao imediata"}
   ]},
   {id:19,data:"10/07 (Sex)",sem:3,tipo:"util",fase:"Fase 3 — Coletanea",temas:["J"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M3 T5 (1h00) — Aspectos pessoais do matrimonio e divorcio"},
-    {o:2,min:60,tipo:"aula",t:"Monaco M3 T10 (25min) + M2 T9 (41min) — Sucessoes pessoais e patrimoniais"},
-    {o:3,min:60,tipo:"leitura",t:"Coletanea Monaco/Loula — Cap. 24 (regime matrimonial) e Cap. 25 (sucessoes)"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:55,t:"Monaco M3 T5 (1h00) — Aspectos pessoais do matrimonio e divorcio"},
+    {o:2,min:60,tipo:"aula",sim:false,prob:50,t:"Monaco M3 T10 (25min) + M2 T9 (41min) — Sucessoes pessoais e patrimoniais"},
+    {o:3,min:60,tipo:"leitura",sim:false,prob:45,t:"Coletanea Monaco/Loula — Cap. 24 (regime matrimonial) e Cap. 25 (sucessoes)"}
   ]},
   {id:20,data:"11/07 (Sab)",sem:3,tipo:"fds",fase:"Fase 3 — Coletanea",temas:["K"],tarefas:[
-    {o:1,min:90,tipo:"aula",t:"Monaco M4 T1 (38min) + T4 (1h03) + T5 (1h04) — Territorialidade e competencia internacional"},
-    {o:2,min:60,tipo:"leitura",t:"Dolinger/Tiburcio — Cap. sobre jurisdicao e processo internacional"},
-    {o:3,min:60,tipo:"leitura",t:"Coletanea Monaco/Loula — Cap. 29 (cooperacao juridica internacional)"},
-    {o:4,min:90,tipo:"pratica",t:"Simular questao sobre jurisdicao internacional (45min) + autocorrigir"},
-    {o:5,min:60,tipo:"revisao",t:"Consolidar fichamentos semana 3"}
+    {o:1,min:90,tipo:"aula",sim:false,prob:50,t:"Monaco M4 T1 (38min) + T4 (1h03) + T5 (1h04) — Territorialidade e competencia internacional"},
+    {o:2,min:60,tipo:"leitura",sim:false,prob:40,t:"Dolinger/Tiburcio — Cap. sobre jurisdicao e processo internacional"},
+    {o:3,min:60,tipo:"leitura",sim:false,prob:40,t:"Coletanea Monaco/Loula — Cap. 29 (cooperacao juridica internacional)"},
+    {o:4,min:90,tipo:"pratica",sim:false,prob:45,t:"Simular questao sobre jurisdicao internacional (45min) + autocorrigir"},
+    {o:5,min:60,tipo:"revisao",sim:false,prob:40,t:"Consolidar fichamentos semana 3"}
   ]},
   {id:21,data:"12/07 (Dom)",sem:3,tipo:"fds",fase:"Fase 3 — Coletanea",temas:["A","B","C","D","E"],tarefas:[
-    {o:1,min:120,tipo:"leitura",t:"Coletanea Monaco/Loula — releitura caps. 1, 9, 10"},
-    {o:2,min:120,tipo:"simulado",t:"SIMULADO 2 (2h): DIPr substancial + autonomia conflitual (modelo prova 2022+2023)"},
-    {o:3,min:60,tipo:"pratica",t:"Autocorrecao e analise de pontos de melhoria"},
-    {o:4,min:60,tipo:"revisao",t:"Relatorio Semana 3: medir dominio por tema, ajustar foco na semana 4"}
+    {o:1,min:120,tipo:"leitura",sim:false,prob:80,t:"Coletanea Monaco/Loula — releitura caps. 1, 9, 10"},
+    {o:2,min:120,tipo:"simulado",sim:true,prob:99,t:"SIMULADO 2 (2h): DIPr substancial + autonomia conflitual (modelo prova 2022+2023)"},
+    {o:3,min:60,tipo:"pratica",sim:false,prob:80,t:"Autocorrecao e analise de pontos de melhoria"},
+    {o:4,min:60,tipo:"revisao",sim:false,prob:55,t:"Relatorio Semana 3: medir dominio por tema, ajustar foco na semana 4"}
   ]},
   {id:22,data:"13/07 (Seg)",sem:4,tipo:"util",fase:"Fase 4 — Consolidacao",temas:["B","H"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao ativa Reenvio: cobrir fichas e testar os 4 modelos + art. 16 LINDB de memoria"},
-    {o:2,min:90,tipo:"pratica",t:"Resposta completa sobre reenvio (1h), autocorrigir vs. espelho 2024"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:85,t:"Revisao ativa Reenvio: cobrir fichas e testar os 4 modelos + art. 16 LINDB de memoria"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:85,t:"Resposta completa sobre reenvio (1h), autocorrigir vs. espelho 2024"}
   ]},
   {id:23,data:"14/07 (Ter)",sem:4,tipo:"util",fase:"Fase 4 — Consolidacao",temas:["C","D"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao ativa: clausula de excecao + autonomia conflitual — testar de memoria"},
-    {o:2,min:90,tipo:"pratica",t:"Reescrever Q2 da prova 2023 com melhoria apos correcao anterior"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:85,t:"Revisao ativa: clausula de excecao + autonomia conflitual — testar de memoria"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:80,t:"Reescrever Q2 da prova 2023 com melhoria apos correcao anterior"}
   ]},
   {id:24,data:"15/07 (Qua)",sem:4,tipo:"util",fase:"Fase 4 — Consolidacao",temas:["E","F"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao: DIPr substancial (Francescakis, nomenclaturas, atuacao a priori) + DIPu blico x DIPr"},
-    {o:2,min:90,tipo:"pratica",t:"Simular questao sobre DIPr substancial + DIPu blico x DIPr num unico enunciado ficticio"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:75,t:"Revisao: DIPr substancial (Francescakis) + DIPu blico x DIPr"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:75,t:"Simular questao sobre DIPr substancial + DIPu blico x DIPr num unico enunciado"}
   ]},
   {id:25,data:"16/07 (Qui)",sem:4,tipo:"util",fase:"Fase 4 — Consolidacao",temas:["A","G"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao: normas de conflito, objeto da disciplina, elemento de conexao (Monaco 2019 nota 92)"},
-    {o:2,min:90,tipo:"pratica",t:"Resposta simulando Q(a) e Q(b) da prova 2022 sobre normas indiretas vs. diretas"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:90,t:"Revisao: normas de conflito, objeto da disciplina, elemento de conexao (Monaco 2019 nota 92)"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:90,t:"Resposta simulando Q(a) e Q(b) da prova 2022 sobre normas indiretas vs. diretas"}
   ]},
   {id:26,data:"17/07 (Sex)",sem:4,tipo:"util",fase:"Fase 4 — Consolidacao",temas:["H","I"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao: lacunas intersistemicas (Monaco 2019) + controle constitucional (Monaco 2013)"},
-    {o:2,min:90,tipo:"pratica",t:"Criar pergunta ficticia sobre controle constitucional da lei estrangeira + escrever + corrigir"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:65,t:"Revisao: lacunas intersistemicas (Monaco 2019) + controle constitucional (Monaco 2013)"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:60,t:"Criar pergunta ficticia sobre controle constitucional da lei estrangeira + escrever + corrigir"}
   ]},
   {id:27,data:"18/07 (Sab)",sem:4,tipo:"fds",fase:"Fase 4 — Consolidacao",temas:["A","B","C","D","E","F"],tarefas:[
-    {o:1,min:150,tipo:"simulado",t:"SIMULADO GERAL 1 (2h30): prova completa em condicoes reais — 1 questao de 10 pontos"},
-    {o:2,min:60,tipo:"pratica",t:"Autocorrecao rigorosa contra todos os espelhos disponiveis"},
-    {o:3,min:90,tipo:"revisao",t:"Identificar 3 pontos mais fracos e anotar para a semana 5"},
-    {o:4,min:60,tipo:"revisao",t:"Reler caps. 1 e 9 da Coletanea Monaco/Loula"}
+    {o:1,min:150,tipo:"simulado",sim:true,prob:99,t:"SIMULADO GERAL 1 (2h30): prova completa em condicoes reais — 1 questao de 10 pontos"},
+    {o:2,min:60,tipo:"pratica",sim:false,prob:90,t:"Autocorrecao rigorosa contra todos os espelhos disponiveis"},
+    {o:3,min:90,tipo:"revisao",sim:false,prob:80,t:"Identificar 3 pontos mais fracos e anotar para a semana 5"},
+    {o:4,min:60,tipo:"revisao",sim:false,prob:70,t:"Reler caps. 1 e 9 da Coletanea Monaco/Loula"}
   ]},
   {id:28,data:"19/07 (Dom)",sem:4,tipo:"fds",fase:"Fase 4 — Consolidacao",temas:["J","K"],tarefas:[
-    {o:1,min:60,tipo:"aula",t:"Monaco M4 T9 (1h23) — Homologacao de decisoes estrangeiras"},
-    {o:2,min:90,tipo:"revisao",t:"Revisao familia/sucessoes + jurisdicao: reler fichas, testar conceitos-chave"},
-    {o:3,min:60,tipo:"pratica",t:"Escrever 500 palavras sobre homologacao e cooperacao juridica sem consulta"},
-    {o:4,min:90,tipo:"revisao",t:"Relatorio Semana 4: nota simulado geral, lacunas criticas, plano para semana 5"},
-    {o:5,min:60,tipo:"revisao",t:"Conferir acesso a todos os titulos da bibliografia obrigatoria"}
+    {o:1,min:60,tipo:"aula",sim:false,prob:45,t:"Monaco M4 T9 (1h23) — Homologacao de decisoes estrangeiras"},
+    {o:2,min:90,tipo:"revisao",sim:false,prob:50,t:"Revisao familia/sucessoes + jurisdicao: reler fichas, testar conceitos-chave"},
+    {o:3,min:60,tipo:"pratica",sim:false,prob:45,t:"Escrever 500 palavras sobre homologacao e cooperacao juridica sem consulta"},
+    {o:4,min:90,tipo:"revisao",sim:false,prob:55,t:"Relatorio Semana 4: nota simulado geral, lacunas criticas, plano para semana 5"},
+    {o:5,min:60,tipo:"revisao",sim:false,prob:50,t:"Conferir acesso a todos os titulos da bibliografia obrigatoria"}
   ]},
   {id:29,data:"20/07 (Seg)",sem:5,tipo:"util",fase:"Fase 5 — Sprint Final",temas:["B","C"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao intensiva: reenvio + clausula de excecao — sintese comparativa em 1 pagina"},
-    {o:2,min:90,tipo:"pratica",t:"Treino: 1 resposta em 40 min sobre 1 desses temas sem consulta"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:85,t:"Revisao intensiva: reenvio + clausula de excecao — sintese comparativa em 1 pagina"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:85,t:"Treino: 1 resposta em 40 min sobre 1 desses temas sem consulta"}
   ]},
   {id:30,data:"21/07 (Ter)",sem:5,tipo:"util",fase:"Fase 5 — Sprint Final",temas:["A","D"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao intensiva: normas de conflito + autonomia conflitual — vocabulario tecnico exato"},
-    {o:2,min:90,tipo:"pratica",t:"Treino: resposta integrando normas de conflito e autonomia conflitual"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:90,t:"Revisao intensiva: normas de conflito + autonomia conflitual — vocabulario tecnico exato"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:90,t:"Treino: resposta integrando normas de conflito e autonomia conflitual"}
   ]},
   {id:31,data:"22/07 (Qua)",sem:5,tipo:"util",fase:"Fase 5 — Sprint Final",temas:["E","F"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao: DIPr substancial + DIPu blico x DIPr — reler fichas + espelhos 2022 e 2025"},
-    {o:2,min:90,tipo:"pratica",t:"Simular questao cruzando DIPr substancial com DIPu blico x DIPr (provavel para 2026)"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:75,t:"Revisao: DIPr substancial + DIPu blico x DIPr — reler fichas + espelhos 2022 e 2025"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:75,t:"Simular questao cruzando DIPr substancial com DIPu blico x DIPr (provavel 2026)"}
   ]},
   {id:32,data:"23/07 (Qui)",sem:5,tipo:"util",fase:"Fase 5 — Sprint Final",temas:["H","I"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao lacunas + constitucionalidade — reforcar argumentos mais sofisticados"},
-    {o:2,min:90,tipo:"pratica",t:"Treino de redacao discursiva: linguagem tecnica, estrutura de argumento pos-grad."}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:65,t:"Revisao lacunas + constitucionalidade — reforcar argumentos mais sofisticados"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:65,t:"Treino de redacao discursiva: linguagem tecnica, estrutura de argumento pos-grad."}
   ]},
   {id:33,data:"24/07 (Sex)",sem:5,tipo:"util",fase:"Fase 5 — Sprint Final",temas:["A","B","C","D"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Flash review de todas as fichas: cobrir e recuperar de memoria"},
-    {o:2,min:90,tipo:"pratica",t:"Escrever esquema-resposta (topicos) para cada um dos 4 temas de nivel 1"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:90,t:"Flash review de todas as fichas: cobrir e recuperar de memoria"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:90,t:"Escrever esquema-resposta (topicos) para cada um dos 4 temas de nivel 1"}
   ]},
   {id:34,data:"25/07 (Sab)",sem:5,tipo:"fds",fase:"Fase 5 — Sprint Final",temas:["A","B","C","D","E","F","G","H"],tarefas:[
-    {o:1,min:150,tipo:"simulado",t:"SIMULADO GERAL 2 (2h30): prova completa em condicoes reais"},
-    {o:2,min:60,tipo:"pratica",t:"Autocorrecao + comparacao com espelhos"},
-    {o:3,min:60,tipo:"revisao",t:"Medir evolucao vs. Simulado Geral 1"},
-    {o:4,min:90,tipo:"revisao",t:"Releitura seletiva da bibliografia: trechos dos espelhos que voce errou"}
+    {o:1,min:150,tipo:"simulado",sim:true,prob:99,t:"SIMULADO GERAL 2 (2h30): prova completa em condicoes reais"},
+    {o:2,min:60,tipo:"pratica",sim:false,prob:90,t:"Autocorrecao + comparacao com espelhos"},
+    {o:3,min:60,tipo:"revisao",sim:false,prob:80,t:"Medir evolucao vs. Simulado Geral 1"},
+    {o:4,min:90,tipo:"revisao",sim:false,prob:75,t:"Releitura seletiva da bibliografia: trechos dos espelhos que voce errou"}
   ]},
   {id:35,data:"26/07 (Dom)",sem:5,tipo:"fds",fase:"Fase 5 — Sprint Final",temas:["A","B","C","D","E","F"],tarefas:[
-    {o:1,min:120,tipo:"revisao",t:"Reler todos os espelhos de correcao 2022-2025: criterios de pontuacao"},
-    {o:2,min:90,tipo:"pratica",t:"Treino final: 1 questao nova (tema que voce se sente mais fraco)"},
-    {o:3,min:60,tipo:"revisao",t:"Relatorio Semana 5: auto-avaliacao final, confianca por tema (0-10)"},
-    {o:4,min:90,tipo:"revisao",t:"Organizar fichas finais por ordem de probabilidade"}
+    {o:1,min:120,tipo:"revisao",sim:false,prob:85,t:"Reler todos os espelhos de correcao 2022-2025: criterios de pontuacao"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:85,t:"Treino final: 1 questao nova (tema que voce se sente mais fraco)"},
+    {o:3,min:60,tipo:"revisao",sim:false,prob:70,t:"Relatorio Semana 5: auto-avaliacao final, confianca por tema (0-10)"},
+    {o:4,min:90,tipo:"revisao",sim:false,prob:65,t:"Organizar fichas finais por ordem de probabilidade"}
   ]},
   {id:36,data:"27/07 (Seg)",sem:6,tipo:"util",fase:"Fase 6 — Reta Final",temas:["B","C"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao leve reenvio + clausula de excecao: leitura das fichas"},
-    {o:2,min:90,tipo:"pratica",t:"Plano de resposta (esquema) para cada variacao possivel de questao nesses temas"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:85,t:"Revisao leve reenvio + clausula de excecao: leitura das fichas"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:85,t:"Plano de resposta (esquema) para cada variacao possivel de questao nesses temas"}
   ]},
   {id:37,data:"28/07 (Ter)",sem:6,tipo:"util",fase:"Fase 6 — Reta Final",temas:["A","D","E"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao leve: normas de conflito + autonomia + DIPr substancial"},
-    {o:2,min:90,tipo:"pratica",t:"Ler em voz alta os principais argumentos doutrinarios (fixacao ativa)"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:90,t:"Revisao leve: normas de conflito + autonomia + DIPr substancial"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:85,t:"Ler em voz alta os principais argumentos doutrinarios (fixacao ativa)"}
   ]},
   {id:38,data:"29/07 (Qua)",sem:6,tipo:"util",fase:"Fase 6 — Reta Final",temas:["F","G","H"],tarefas:[
-    {o:1,min:90,tipo:"revisao",t:"Revisao leve: DIPu blico x DIPr + objetos da disciplina + lacunas intersistemicas"},
-    {o:2,min:90,tipo:"pratica",t:"Simular 45min: tema que voce se sente mais fraco — escrever sem consulta"}
+    {o:1,min:90,tipo:"revisao",sim:false,prob:70,t:"Revisao leve: DIPu blico x DIPr + objetos da disciplina + lacunas intersistemicas"},
+    {o:2,min:90,tipo:"pratica",sim:false,prob:70,t:"Simular 45min: tema que voce se sente mais fraco — escrever sem consulta"}
   ]},
   {id:39,data:"30/07 (Qui)",sem:6,tipo:"util",fase:"Fase 6 — Reta Final",temas:["A","B","C","D"],tarefas:[
-    {o:1,min:60,tipo:"revisao",t:"Flash cards finais: 5 min por tema, conceitos-chave de todos"},
-    {o:2,min:60,tipo:"revisao",t:"Reler espelhos 2023 e 2024 — ultima vez nos criterios de pontuacao"},
-    {o:3,min:60,tipo:"revisao",t:"Descanso ativo: revisar itens mais solidos, confirmar confianca"}
+    {o:1,min:60,tipo:"revisao",sim:false,prob:90,t:"Flash cards finais: 5 min por tema, conceitos-chave de todos"},
+    {o:2,min:60,tipo:"revisao",sim:false,prob:85,t:"Reler espelhos 2023 e 2024 — ultima vez nos criterios de pontuacao"},
+    {o:3,min:60,tipo:"revisao",sim:false,prob:75,t:"Descanso ativo: revisar itens mais solidos, confirmar confianca"}
   ]},
   {id:40,data:"31/07 (Sex)",sem:6,tipo:"util",fase:"Fase 6 — Reta Final",temas:["A","B"],tarefas:[
-    {o:1,min:60,tipo:"revisao",t:"Leitura leve das fichas mais importantes (reenvio + normas de conflito)"},
-    {o:2,min:60,tipo:"revisao",t:"Logistica: local de prova, material, horario — portoes fecham na hora"}
+    {o:1,min:60,tipo:"revisao",sim:false,prob:90,t:"Leitura leve das fichas mais importantes (reenvio + normas de conflito)"},
+    {o:2,min:60,tipo:"revisao",sim:false,prob:80,t:"Logistica: local de prova, material, horario — portoes fecham na hora"}
   ]},
   {id:41,data:"01/08 (Sab)",sem:6,tipo:"fds",fase:"Fase 6 — Reta Final",temas:[],tarefas:[
-    {o:1,min:60,tipo:"revisao",t:"Leitura tranquila dos fichamentos (sem pressao)"},
-    {o:2,min:60,tipo:"revisao",t:"Descanso: dormir cedo, hidratacao — prova as 13h do dia 02/08"}
+    {o:1,min:60,tipo:"revisao",sim:false,prob:70,t:"Leitura tranquila dos fichamentos (sem pressao)"},
+    {o:2,min:60,tipo:"revisao",sim:false,prob:60,t:"Descanso: dormir cedo, hidratacao — prova as 13h do dia 02/08"}
   ]}
 ];
 
-// ─── ESTADO ──────────────────────────────────────────────────────────────────
-var STORAGE_KEY = "dipr_v4";
-var progresso = {};
+// ─── ESTADO GLOBAL ────────────────────────────────────────────────────────────
+var STORAGE_KEY = "dipr_v5";
+var progresso = {};      // {diaId: [bool, bool, ...]}
+var remanejos = {};      // {diaId: [{tarefaOrigem, tarefaData, ...}]}
+var cargaExtra = {};     // {diaId: minutos_extras_adicionados}
 var diaAtivo = 1;
 var semAtiva = 1;
 var tabAtiva = "roteiro";
 var semRel = 1;
+var modalOpcaoSel = null;
+var modalDiaId = null;
 
-function loadProg() {
-  var raw = storage.get(STORAGE_KEY);
-  if (raw) {
-    try { return JSON.parse(raw); } catch(e) {}
-  }
-  var init = {};
-  for (var i = 0; i < ROTEIRO.length; i++) {
-    var d = ROTEIRO[i];
-    init[d.id] = [];
-    for (var j = 0; j < d.tarefas.length; j++) init[d.id].push(false);
-  }
-  return init;
+function salvar() {
+  store.set(STORAGE_KEY, JSON.stringify({prog: progresso, rem: remanejos, extra: cargaExtra}));
 }
 
-function saveProg() {
-  try { storage.set(STORAGE_KEY, JSON.stringify(progresso)); } catch(e) {}
+function carregar() {
+  var raw = store.get(STORAGE_KEY);
+  if (raw) {
+    try {
+      var d = JSON.parse(raw);
+      progresso = d.prog || {};
+      remanejos = d.rem || {};
+      cargaExtra = d.extra || {};
+      return;
+    } catch(e) {}
+  }
+  progresso = {}; remanejos = {}; cargaExtra = {};
+  for (var i = 0; i < ROTEIRO_BASE.length; i++) {
+    var dia = ROTEIRO_BASE[i];
+    progresso[dia.id] = dia.tarefas.map(function(){ return false; });
+  }
 }
 
 function getDia(id) {
-  for (var i = 0; i < ROTEIRO.length; i++) { if (ROTEIRO[i].id === id) return ROTEIRO[i]; }
-  return ROTEIRO[0];
+  for (var i = 0; i < ROTEIRO_BASE.length; i++) { if (ROTEIRO_BASE[i].id === id) return ROTEIRO_BASE[i]; }
+  return ROTEIRO_BASE[0];
 }
 
-function getPctDia(dia) {
-  var arr = progresso[dia.id] || [];
+function getTarefasCompletasNoDia(diaId) {
+  // tarefas originais + remanejos
+  var base = getDia(diaId);
+  var tAll = [];
+  for (var i = 0; i < base.tarefas.length; i++) {
+    tAll.push({ tar: base.tarefas[i], idx: i, origem: null });
+  }
+  if (remanejos[diaId]) {
+    for (var j = 0; j < remanejos[diaId].length; j++) {
+      var r = remanejos[diaId][j];
+      tAll.push({ tar: r, idx: base.tarefas.length + j, origem: r.origemData });
+    }
+  }
+  return tAll;
+}
+
+function getPctDia(diaId) {
+  var all = getTarefasCompletasNoDia(diaId);
+  if (!all.length) return 0;
+  var arr = progresso[diaId] || [];
   var f = 0;
   for (var i = 0; i < arr.length; i++) { if (arr[i]) f++; }
-  return dia.tarefas.length ? Math.round((f / dia.tarefas.length) * 100) : 0;
+  return Math.round((f / all.length) * 100);
 }
 
-function getStatusDia(dia) {
-  var p = getPctDia(dia);
+function getStatusDia(diaId) {
+  var p = getPctDia(diaId);
   if (p === 0) return "pendente";
   if (p === 100) return "done";
   return "partial";
 }
 
+function getCargaDia(diaId) {
+  var base = getDia(diaId);
+  var baseMin = base.tarefas.reduce(function(a,t){ return a+t.min; }, 0);
+  var remMin = 0;
+  if (remanejos[diaId]) {
+    for (var i = 0; i < remanejos[diaId].length; i++) remMin += remanejos[diaId][i].min;
+  }
+  return baseMin + remMin;
+}
+
+function getLimiteDia(diaId) {
+  var base = getDia(diaId);
+  var lim = CARGA_BASE[base.tipo] || 180;
+  if (cargaExtra[diaId]) lim += cargaExtra[diaId];
+  return lim;
+}
+
 function getPctSem(s) {
   var total = 0, feitos = 0;
-  for (var i = 0; i < ROTEIRO.length; i++) {
-    var d = ROTEIRO[i];
+  for (var i = 0; i < ROTEIRO_BASE.length; i++) {
+    var d = ROTEIRO_BASE[i];
     if (d.sem !== s) continue;
-    total += d.tarefas.length;
+    var all = getTarefasCompletasNoDia(d.id);
+    total += all.length;
     var arr = progresso[d.id] || [];
     for (var j = 0; j < arr.length; j++) { if (arr[j]) feitos++; }
   }
@@ -428,32 +526,233 @@ function getPctSem(s) {
 
 function getTotalGeral() {
   var total = 0, feitos = 0;
-  for (var i = 0; i < ROTEIRO.length; i++) {
-    var d = ROTEIRO[i];
-    total += d.tarefas.length;
+  for (var i = 0; i < ROTEIRO_BASE.length; i++) {
+    var d = ROTEIRO_BASE[i];
+    var all = getTarefasCompletasNoDia(d.id);
+    total += all.length;
     var arr = progresso[d.id] || [];
     for (var j = 0; j < arr.length; j++) { if (arr[j]) feitos++; }
   }
-  var pct = total ? Math.round((feitos / total) * 100) : 0;
-  return {total: total, feitos: feitos, pct: pct};
+  return {total:total, feitos:feitos, pct: total ? Math.round((feitos/total)*100):0};
 }
 
 function getDiasSem(s) {
   var out = [];
-  for (var i = 0; i < ROTEIRO.length; i++) { if (ROTEIRO[i].sem === s) out.push(ROTEIRO[i]); }
+  for (var i = 0; i < ROTEIRO_BASE.length; i++) { if (ROTEIRO_BASE[i].sem === s) out.push(ROTEIRO_BASE[i]); }
   return out;
 }
 
-// ─── INICIALIZAÇÃO ───────────────────────────────────────────────────────────
-progresso = loadProg();
+function getPendentesNoDia(diaId) {
+  var base = getDia(diaId);
+  var arr = progresso[diaId] || [];
+  var pendentes = [];
+  for (var i = 0; i < base.tarefas.length; i++) {
+    if (!arr[i] && !base.tarefas[i].sim) {
+      pendentes.push(base.tarefas[i]);
+    }
+  }
+  return pendentes;
+}
 
-var hoje = new Date();
-var inicio = new Date("2026-06-22");
-var diff = Math.floor((hoje - inicio) / 86400000);
-diaAtivo = Math.max(1, Math.min(diff + 1, 41));
-var diaIni = getDia(diaAtivo);
-semAtiva = diaIni ? diaIni.sem : 1;
+function diasFuturos(diaId) {
+  var out = [];
+  for (var i = 0; i < ROTEIRO_BASE.length; i++) {
+    if (ROTEIRO_BASE[i].id > diaId && ROTEIRO_BASE[i].id <= 41) out.push(ROTEIRO_BASE[i]);
+  }
+  return out;
+}
+
+function proximoFDS(diaId) {
+  var futuros = diasFuturos(diaId);
+  for (var i = 0; i < futuros.length; i++) {
+    if (futuros[i].tipo === "fds") return futuros[i];
+  }
+  return null;
+}
+
+// ─── REMANEJO ────────────────────────────────────────────────────────────────
+function verificarRemanejo(diaId) {
+  var hoje = new Date();
+  var inicio = new Date("2026-06-23");
+  var diaNum = Math.floor((hoje - inicio) / 86400000) + 1;
+  // so verificar dias passados
+  if (diaId >= diaNum) return false;
+  var pendentes = getPendentesNoDia(diaId);
+  return pendentes.length > 0;
+}
+
+function abrirModalDiaAtivo() {
+  abrirModal(diaAtivo);
+}
+
+function abrirModal(diaId) {
+  var pendentes = getPendentesNoDia(diaId);
+  if (!pendentes.length) return;
+
+  modalDiaId = diaId;
+  modalOpcaoSel = null;
+
+  var base = getDia(diaId);
+  document.getElementById("modal-title").textContent = "Tarefas nao concluidas — " + base.data;
+  document.getElementById("modal-sub").textContent = pendentes.length + " tarefa(s) nao feita(s). Escolha como deseja remaneja-las:";
+
+  // Lista de tarefas pendentes
+  var listHtml = "";
+  for (var i = 0; i < pendentes.length; i++) {
+    var t = pendentes[i];
+    var tc = TIPO[t.tipo] || TIPO.revisao;
+    listHtml += '<div class="modal-task-item"><span class="task-badge ' + tc.cls + '" style="flex-shrink:0">' + tc.label + '</span><span>' + t.t + ' (' + t.min + 'min)</span></div>';
+  }
+  document.getElementById("modal-task-list").innerHTML = listHtml;
+
+  // Calcular opcoes
+  var proxDia = null;
+  var fds = proximoFDS(diaId);
+  var futuros = diasFuturos(diaId);
+  if (futuros.length > 0) proxDia = futuros[0];
+
+  var totalPendMin = pendentes.reduce(function(a,t){ return a+t.min; }, 0);
+
+  var opcoes = "";
+
+  // Opcao 1: dia seguinte
+  if (proxDia) {
+    var cargaProx = getCargaDia(proxDia.id);
+    var limProx = getLimiteDia(proxDia.id);
+    var novaProx = cargaProx + totalPendMin;
+    var aviso = novaProx > limProx ? " (requer extensao de " + (novaProx-limProx) + "min)" : " (cabe no limite atual)";
+    opcoes += '<div class="modal-option" id="op1" onclick="selOpcao(1)"><div class="modal-option-icon">➡️</div><div><div class="modal-option-title">Dia seguinte (' + proxDia.data + ')</div><div class="modal-option-desc">Adicionar ao inicio de amanha com prioridade.' + aviso + '</div></div></div>';
+  }
+
+  // Opcao 2: proximo FDS
+  if (fds && fds.id !== (proxDia ? proxDia.id : -1)) {
+    var cargaFds = getCargaDia(fds.id);
+    var limFds = getLimiteDia(fds.id);
+    var novaFds = cargaFds + totalPendMin;
+    var avisoFds = novaFds > limFds ? " (requer extensao de " + (novaFds-limFds) + "min)" : " (cabe no limite atual)";
+    opcoes += '<div class="modal-option" id="op2" onclick="selOpcao(2)"><div class="modal-option-icon">📅</div><div><div class="modal-option-title">Proximo fim de semana (' + fds.data + ')</div><div class="modal-option-desc">Aproveitar o tempo extra do FDS.' + avisoFds + '</div></div></div>';
+  }
+
+  // Opcao 3: distribuir ao longo da semana
+  if (futuros.length >= 2) {
+    var diasSemana = [];
+    for (var k = 0; k < futuros.length && diasSemana.length < 4; k++) {
+      if (futuros[k].tipo === "util") diasSemana.push(futuros[k]);
+    }
+    if (diasSemana.length >= 2) {
+      opcoes += '<div class="modal-option" id="op3" onclick="selOpcao(3)"><div class="modal-option-icon">📊</div><div><div class="modal-option-title">Distribuir ao longo da semana</div><div class="modal-option-desc">Dividir as tarefas entre os proximos ' + diasSemana.length + ' dias uteis, adicionando ~' + Math.ceil(totalPendMin/diasSemana.length) + 'min por dia.</div></div></div>';
+    }
+  }
+
+  if (!opcoes) {
+    opcoes = '<div class="alert-banner alert-danger"><span class="alert-icon">⚠️</span><span>Nao ha dias uteis suficientes para remanejo. As tarefas serao descartadas ou devem ser incorporadas manualmente.</span></div>';
+    document.getElementById("modal-confirmar").style.display = "none";
+  } else {
+    document.getElementById("modal-confirmar").style.display = "";
+  }
+
+  document.getElementById("modal-opcoes").innerHTML = opcoes;
+  document.getElementById("modal").style.display = "flex";
+}
+
+function selOpcao(n) {
+  modalOpcaoSel = n;
+  for (var i = 1; i <= 3; i++) {
+    var el = document.getElementById("op" + i);
+    if (el) el.className = "modal-option" + (i === n ? " selected" : "");
+  }
+}
+
+function fecharModal() {
+  document.getElementById("modal").style.display = "none";
+  modalDiaId = null; modalOpcaoSel = null;
+}
+
+function fecharModalFora(e) {
+  if (e.target === document.getElementById("modal")) fecharModal();
+}
+
+function confirmarRemanejo() {
+  if (!modalDiaId || !modalOpcaoSel) { alert("Selecione uma opcao de remanejo."); return; }
+
+  var pendentes = getPendentesNoDia(modalDiaId);
+  if (!pendentes.length) { fecharModal(); return; }
+
+  var base = getDia(modalDiaId);
+  var futuros = diasFuturos(modalDiaId);
+  var fds = proximoFDS(modalDiaId);
+
+  if (modalOpcaoSel === 1) {
+    // Dia seguinte
+    var proxDia = futuros.length ? futuros[0] : null;
+    if (proxDia) remanejarPara(pendentes, proxDia.id, base.data);
+  } else if (modalOpcaoSel === 2) {
+    // FDS
+    if (fds) remanejarPara(pendentes, fds.id, base.data);
+  } else if (modalOpcaoSel === 3) {
+    // Distribuir
+    var diasUtil = [];
+    for (var k = 0; k < futuros.length && diasUtil.length < 4; k++) {
+      if (futuros[k].tipo === "util") diasUtil.push(futuros[k]);
+    }
+    var por = Math.ceil(pendentes.length / Math.max(diasUtil.length, 1));
+    var idx = 0;
+    for (var d = 0; d < diasUtil.length && idx < pendentes.length; d++) {
+      var lote = pendentes.slice(idx, idx + por);
+      remanejarPara(lote, diasUtil[d].id, base.data);
+      idx += por;
+    }
+  }
+
+  fecharModal();
+  render();
+  updateStrip();
+}
+
+function remanejarPara(tarefas, destDiaId, origemData) {
+  if (!remanejos[destDiaId]) remanejos[destDiaId] = [];
+  var cargaAtual = getCargaDia(destDiaId);
+  var limAtual = getLimiteDia(destDiaId);
+  var totalNovo = tarefas.reduce(function(a,t){ return a+t.min; }, 0);
+  // Estender se necessario
+  if (cargaAtual + totalNovo > limAtual) {
+    var extra = (cargaAtual + totalNovo) - limAtual;
+    cargaExtra[destDiaId] = (cargaExtra[destDiaId] || 0) + extra;
+  }
+  for (var i = 0; i < tarefas.length; i++) {
+    var t = Object.assign ? Object.assign({}, tarefas[i]) : JSON.parse(JSON.stringify(tarefas[i]));
+    t.origemData = origemData;
+    remanejos[destDiaId].push(t);
+    // registrar slot no progresso
+    if (!progresso[destDiaId]) progresso[destDiaId] = [];
+    progresso[destDiaId].push(false);
+  }
+  salvar();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+carregar();
+
+var hoje2 = new Date();
+var inicio2 = new Date("2026-06-23");
+var diff2 = Math.floor((hoje2 - inicio2) / 86400000);
+diaAtivo = Math.max(1, Math.min(diff2 + 1, 41));
+var diaIni2 = getDia(diaAtivo);
+semAtiva = diaIni2 ? diaIni2.sem : 1;
 semRel = semAtiva;
+
+// ─── STRIP ────────────────────────────────────────────────────────────────────
+function updateStrip() {
+  var dh = getDia(diaAtivo);
+  document.getElementById("strip-txt").textContent = "Dia ativo: " + dh.data + "  |  " + dh.fase;
+  // Verificar se ha remanejo pendente em dias passados
+  var temPendente = false;
+  var diaNum = Math.floor((new Date() - new Date("2026-06-23")) / 86400000) + 1;
+  for (var i = 1; i < diaNum && i <= 41; i++) {
+    if (verificarRemanejo(i)) { temPendente = true; break; }
+  }
+  document.getElementById("strip-remanejo-btn").style.display = temPendente ? "" : "none";
+}
 
 // ─── HEADER ──────────────────────────────────────────────────────────────────
 function updateHeader() {
@@ -461,23 +760,21 @@ function updateHeader() {
   document.getElementById("hdr-feitos").textContent = g.feitos + "/" + g.total + " tarefas";
   document.getElementById("hdr-pct").textContent = g.pct + "%";
   document.getElementById("hdr-bar").style.width = g.pct + "%";
-  var dh = getDia(diaAtivo);
-  document.getElementById("today-strip").textContent = "Dia ativo: " + dh.data + "  |  " + dh.fase;
+  updateStrip();
 }
 
 // ─── RENDERIZADORES ──────────────────────────────────────────────────────────
 function renderRoteiro() {
   var dias = getDiasSem(semAtiva);
   var diaObj = getDia(diaAtivo);
-  var pctDia = getPctDia(diaObj);
+  var pctDia = getPctDia(diaAtivo);
+  var cargaDia = getCargaDia(diaAtivo);
+  var limDia = getLimiteDia(diaAtivo);
+  var allTarefas = getTarefasCompletasNoDia(diaAtivo);
 
-  var html = '';
-
-  // chips semanas
-  html += '<div class="chip-row">';
+  var html = '<div class="chip-row">';
   for (var s = 1; s <= 6; s++) {
-    var ativa = (diaObj.sem === s);
-    html += '<button class="chip' + (ativa ? ' active' : '') + '" onclick="setSem(' + s + ')">' + s + 'a sem. (' + getPctSem(s) + '%)</button>';
+    html += '<button class="chip' + (diaObj.sem===s?' active':'') + '" onclick="setSem('+s+')">' + s + 'a sem. (' + getPctSem(s) + '%)</button>';
   }
   html += '</div>';
 
@@ -485,55 +782,78 @@ function renderRoteiro() {
   html += '<div class="scroll-row" style="margin-bottom:14px">';
   for (var i = 0; i < dias.length; i++) {
     var d = dias[i];
-    var st = getStatusDia(d);
+    var st = getStatusDia(d.id);
+    var temRem = remanejos[d.id] && remanejos[d.id].length > 0;
     var ativo = (d.id === diaAtivo);
-    var cls = ativo ? 'day-chip active' : (st === 'done' ? 'day-chip done' : (st === 'partial' ? 'day-chip partial' : 'day-chip'));
-    var icon = st === 'done' ? ' ✓' : (st === 'partial' ? ' ' + getPctDia(d) + '%' : '');
-    html += '<button class="' + cls + '" onclick="setDia(' + d.id + ')">' + d.data.split(' ')[0] + icon + '</button>';
+    var cls = ativo ? 'day-chip active' : (temRem ? 'day-chip overloaded' : (st==='done'?'day-chip done':st==='partial'?'day-chip partial':'day-chip'));
+    var icon = st==='done'?' ✓':(st==='partial'?' '+getPctDia(d.id)+'%':'');
+    if (temRem && !ativo) icon = ' +';
+    html += '<button class="'+cls+'" onclick="setDia('+d.id+')">'+d.data.split(' ')[0]+icon+'</button>';
   }
   html += '</div>';
 
+  // alertas
+  var diaNum = Math.floor((new Date()-new Date("2026-06-23"))/86400000)+1;
+  if (verificarRemanejo(diaAtivo)) {
+    html += '<div class="alert-banner alert-warning"><span class="alert-icon">⚠️</span><span><strong>Tarefas pendentes neste dia.</strong> Clique em "Remanejar" para redistribui-las nos proximos dias.</span><button onclick="abrirModal('+diaAtivo+')" style="margin-left:8px;background:#d97706;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0">Remanejar</button></div>';
+  }
+  if (cargaDia > limDia) {
+    var extra = cargaDia - limDia;
+    html += '<div class="alert-banner alert-danger"><span class="alert-icon">🔴</span><span>Dia sobrecarregado: ' + cargaDia + 'min de tarefas / limite ' + limDia + 'min. <strong>+' + extra + 'min extras necessarios</strong> (horario estendido automaticamente).</span></div>';
+  } else if (remanejos[diaAtivo] && remanejos[diaAtivo].length > 0) {
+    html += '<div class="alert-banner alert-info"><span class="alert-icon">📌</span><span>Este dia tem ' + remanejos[diaAtivo].length + ' tarefa(s) remanejada(s) de dias anteriores. Carga total: ' + cargaDia + 'min / ' + limDia + 'min disponiveis.</span></div>';
+  }
+
   // card do dia
-  var corPct = pctDia === 100 ? '#059669' : '#1e3a5f';
+  var corPct = pctDia===100?'#059669':'#1e3a5f';
   html += '<div class="card">';
-  html += '<div class="dia-fase">' + diaObj.fase + '</div>';
+  html += '<div class="dia-fase">'+diaObj.fase+'</div>';
   html += '<div class="dia-header"><div>';
-  html += '<div class="dia-title">' + diaObj.data + '</div>';
-  html += '<div class="dia-sub">' + (diaObj.tipo === 'fds' ? '🗓 Fim de semana · ~6h' : '💼 Dia util · ~3h') + '</div>';
+  html += '<div class="dia-title">'+diaObj.data+'</div>';
+  var tipoLabel = diaObj.tipo==='fds'?'🗓 Fim de semana · '+limDia+'min':'💼 Dia util · '+limDia+'min';
+  if (cargaExtra[diaAtivo]) tipoLabel += ' (estendido)';
+  html += '<div class="dia-sub">'+tipoLabel+'</div>';
   html += '</div><div>';
-  html += '<div class="dia-pct" style="color:' + corPct + '">' + pctDia + '%</div>';
+  html += '<div class="dia-pct" style="color:'+corPct+'">'+pctDia+'%</div>';
   html += '<div class="dia-pct-lbl">concluido</div>';
   html += '</div></div>';
 
-  // pills de temas
-  if (diaObj.temas.length > 0) {
+  // temas
+  if (diaObj.temas.length) {
     html += '<div class="tema-pills">';
-    for (var t = 0; t < diaObj.temas.length; t++) {
-      var tema = TEMAS[diaObj.temas[t]];
-      if (tema) html += '<span class="tema-pill">' + tema.prob + '% prob.</span>';
+    for (var t2 = 0; t2 < diaObj.temas.length; t2++) {
+      var tema = TEMAS[diaObj.temas[t2]];
+      if (tema) html += '<span class="tema-pill">'+tema.prob+'% prob.</span>';
     }
     html += '</div>';
   }
 
-  // hint de ordem
-  html += '<div class="ordem-hint">📋 <strong>Ordem do dia:</strong> siga os numeros — sempre faca as tarefas na sequencia indicada para melhor absorcao.</div>';
+  html += '<div class="ordem-hint">📋 <strong>Ordem:</strong> siga os numeros — sempre Aula → Leitura → Fichamento → Pratica → Revisao.</div>';
 
-  // tarefas
-  for (var j = 0; j < diaObj.tarefas.length; j++) {
-    var tar = diaObj.tarefas[j];
-    var feito = (progresso[diaObj.id] && progresso[diaObj.id][j]) ? true : false;
+  // tarefas (base + remanejadas)
+  for (var j = 0; j < allTarefas.length; j++) {
+    var item = allTarefas[j];
+    var tar = item.tar;
+    var feito = (progresso[diaAtivo] && progresso[diaAtivo][j]) ? true : false;
     var tc = TIPO[tar.tipo] || TIPO.revisao;
-    html += '<div class="task-item' + (feito ? ' done' : '') + '" onclick="toggleTask(' + diaObj.id + ',' + j + ')">';
-    html += '<div class="task-num">' + tar.o + '</div>';
+    var isRem = item.origem !== null && item.origem !== undefined;
+    html += '<div class="task-item'+(feito?' done':(isRem?' remaneged':''))+'" onclick="toggleTask('+diaAtivo+','+j+')">';
+    html += '<div class="task-num'+(isRem?' remaneged-num':'')+'">'+tar.o+'</div>';
     html += '<div class="task-body">';
-    html += '<div class="task-meta"><span class="task-badge ' + tc.cls + '">' + tc.label + '</span><span class="task-min">' + tar.min + ' min</span></div>';
-    html += '<div class="task-text">' + tar.t + '</div>';
+    html += '<div class="task-meta"><span class="task-badge '+tc.cls+'">'+tc.label+'</span><span class="task-min">'+tar.min+' min</span>';
+    if (isRem) html += '<span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;font-weight:600">Remanejado</span>';
     html += '</div>';
-    html += '<div class="task-check' + (feito ? ' checked' : '') + '">' + (feito ? '✓' : '') + '</div>';
+    html += '<div class="task-text">'+tar.t+'</div>';
+    if (isRem) html += '<div class="task-origin">📌 De: '+item.origem+'</div>';
+    html += '</div>';
+    html += '<div class="task-check'+(feito?' checked':'')+'">'+( feito?'✓':'')+'</div>';
     html += '</div>';
   }
 
-  html += '<div class="flex-note">💡 <strong>Flexibilidade:</strong> Se nao conseguir tudo, priorize Aula e Leitura. Fichamento e Revisao podem migrar para o dia seguinte.</div>';
+  html += '<div class="flex-note">💡 <strong>Flexibilidade:</strong> Se nao conseguir tudo hoje, use o botao "Remanejar" ao final do dia para redistribuir as tarefas pendentes.</div>';
+
+  // Botao de remanejo no rodape do card
+  html += '<div style="margin-top:12px;text-align:center"><button onclick="abrirModal('+diaAtivo+')" style="background:#1e3a5f;color:#fff;border:none;border-radius:10px;padding:11px 24px;font-size:13px;font-weight:600;cursor:pointer;width:100%">📋 Remanejar tarefas nao concluidas</button></div>';
   html += '</div>';
 
   document.getElementById("main-content").innerHTML = html;
@@ -545,20 +865,20 @@ function renderSemanas() {
   for (var s = 1; s <= 6; s++) {
     var dias = getDiasSem(s);
     var pctS = getPctSem(s);
-    var barCor = pctS === 100 ? '#059669' : '#2d5f8a';
-    var corPct = pctS === 100 ? '#059669' : (pctS > 0 ? '#d97706' : '#9ca3af');
-    html += '<div class="week-card">';
-    html += '<div class="week-header"><div><div class="week-label">Semana ' + s + '</div>';
-    html += '<div class="week-sub">' + (dias[0] ? dias[0].fase : '') + '</div></div>';
-    html += '<div class="week-pct" style="color:' + corPct + '">' + pctS + '%</div></div>';
-    html += '<div class="bar"><div class="bar-fill" style="background:' + barCor + ';width:' + pctS + '%"></div></div>';
+    var barCor = pctS===100?'#059669':'#2d5f8a';
+    var corPct = pctS===100?'#059669':(pctS>0?'#d97706':'#9ca3af');
+    html += '<div class="week-card"><div class="week-header"><div><div class="week-label">Semana '+s+'</div>';
+    html += '<div class="week-sub">'+(dias[0]?dias[0].fase:'')+'</div></div>';
+    html += '<div class="week-pct" style="color:'+corPct+'">'+pctS+'%</div></div>';
+    html += '<div class="bar"><div class="bar-fill" style="background:'+barCor+';width:'+pctS+'%"></div></div>';
     html += '<div class="scroll-row">';
     for (var i = 0; i < dias.length; i++) {
       var d = dias[i];
-      var st = getStatusDia(d);
-      var cls = st === 'done' ? 'day-chip done' : (st === 'partial' ? 'day-chip partial' : 'day-chip');
-      var icon = st === 'done' ? ' ✓' : '';
-      html += '<button class="' + cls + '" onclick="goToDay(' + d.id + ')">' + d.data.split(' ')[0] + icon + '</button>';
+      var st = getStatusDia(d.id);
+      var temRem2 = remanejos[d.id] && remanejos[d.id].length > 0;
+      var cls = st==='done'?'day-chip done':(st==='partial'?'day-chip partial':(temRem2?'day-chip overloaded':'day-chip'));
+      var icon2 = st==='done'?' ✓':(temRem2?' +':'');
+      html += '<button class="'+cls+'" onclick="goToDay('+d.id+')">'+d.data.split(' ')[0]+icon2+'</button>';
     }
     html += '</div></div>';
   }
@@ -568,139 +888,103 @@ function renderSemanas() {
 function renderRelatorio() {
   var dias = getDiasSem(semRel);
   var pctS = getPctSem(semRel);
-  var totalT = 0, feitosT = 0, diasConc = 0;
+  var totalT=0, feitosT=0, diasConc=0;
   var temasSet = {};
   for (var i = 0; i < dias.length; i++) {
     var d = dias[i];
-    totalT += d.tarefas.length;
+    var all = getTarefasCompletasNoDia(d.id);
+    totalT += all.length;
     var arr = progresso[d.id] || [];
     for (var j = 0; j < arr.length; j++) { if (arr[j]) feitosT++; }
-    if (getPctDia(d) === 100) diasConc++;
-    for (var t = 0; t < d.temas.length; t++) temasSet[d.temas[t]] = true;
+    if (getPctDia(d.id)===100) diasConc++;
+    for (var t3 = 0; t3 < d.temas.length; t3++) temasSet[d.temas[t3]] = true;
   }
+  var st="🔴 Precisa de atencao", stC="#b91c1c";
+  if (pctS>=80){st="🟢 Excelente ritmo";stC="#059669";}
+  else if(pctS>=50){st="🟡 Bom progresso";stC="#d97706";}
+  else if(pctS>=30){st="🟠 Progresso moderado";stC="#ea580c";}
+  var interp="";
+  if(pctS===0) interp="Semana ainda nao iniciada.";
+  else if(pctS<50) interp="Progresso abaixo de 50%. Use o Remanejo para redistribuir tarefas pendentes antes de avancar.";
+  else if(pctS<80) interp="Bom progresso ("+pctS+"%). Foque em completar os Simulados — sao inegociaveis.";
+  else if(pctS<100) interp="Otimo progresso ("+pctS+"%). Revise rapidamente os itens pendentes.";
+  else interp="Semana 100% completa! Excelente disciplina.";
 
-  var statusGeral = "🔴 Precisa de atencao"; var stCor = "#b91c1c";
-  if (pctS >= 80) { statusGeral = "🟢 Excelente ritmo"; stCor = "#059669"; }
-  else if (pctS >= 50) { statusGeral = "🟡 Bom progresso"; stCor = "#d97706"; }
-  else if (pctS >= 30) { statusGeral = "🟠 Progresso moderado"; stCor = "#ea580c"; }
-
-  var interp = "";
-  if (pctS === 0) interp = "Semana ainda nao iniciada. Priorize Simulados e Leituras de Alta Prioridade.";
-  else if (pctS < 50) interp = "Progresso abaixo de 50%. Foque em Pratica e Leitura. Redistribua Fichamentos para fins de semana.";
-  else if (pctS < 80) interp = "Bom progresso (" + pctS + "%). Foque em completar os Simulados — sao os mais importantes.";
-  else if (pctS < 100) interp = "Otimo progresso (" + pctS + "%). Revise rapidamente os itens pendentes antes de avancar.";
-  else interp = "Semana 100% completa! Excelente disciplina. Verifique se internalizou os conceitos-chave.";
-
-  var html = '<div class="chip-row">';
-  for (var s = 1; s <= 6; s++) {
-    html += '<button class="chip' + (semRel === s ? ' active' : '') + '" onclick="setSemRel(' + s + ')">Sem. ' + s + '</button>';
+  var html='<div class="chip-row">';
+  for(var s=1;s<=6;s++) html+='<button class="chip'+(semRel===s?' active':'')+'" onclick="setSemRel('+s+')">Sem. '+s+'</button>';
+  html+='</div><div class="card"><div style="font-size:14px;font-weight:700;color:#1e3a5f;margin-bottom:12px">Semana '+semRel+' — '+(dias[0]?dias[0].fase:'')+'</div>';
+  html+='<div class="metric-grid">';
+  html+='<div class="metric-card"><div class="metric-val" style="color:'+stC+'">'+pctS+'%</div><div class="metric-lbl">Conclusao</div></div>';
+  html+='<div class="metric-card"><div class="metric-val" style="color:#1e3a5f">'+feitosT+'/'+totalT+'</div><div class="metric-lbl">Tarefas</div></div>';
+  html+='<div class="metric-card"><div class="metric-val" style="color:#059669">'+diasConc+'/'+dias.length+'</div><div class="metric-lbl">Dias completos</div></div>';
+  html+='</div><div class="status-pill" style="background:'+stC+'18;color:'+stC+';border:1px solid '+stC+'40">'+st+'</div>';
+  html+='<div class="section-title">Dias da semana</div>';
+  for(var k=0;k<dias.length;k++){
+    var dd=dias[k]; var p=getPctDia(dd.id);
+    var barC=p===100?'#059669':(p>0?'#d97706':'#e5e7eb');
+    var hasRem = remanejos[dd.id] && remanejos[dd.id].length > 0;
+    html+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:7px">';
+    html+='<div style="font-size:11px;color:#6b7280;width:92px;flex-shrink:0">'+dd.data+(hasRem?' 📌':'')+'</div>';
+    html+='<div style="flex:1;background:#e5e7eb;border-radius:5px;height:7px"><div style="background:'+barC+';border-radius:5px;height:7px;width:'+p+'%"></div></div>';
+    html+='<div style="font-size:12px;font-weight:600;color:'+(p===100?'#059669':'#374151')+';width:34px;text-align:right">'+p+'%</div></div>';
   }
-  html += '</div><div class="card">';
-  html += '<div style="font-size:14px;font-weight:700;color:#1e3a5f;margin-bottom:12px">Semana ' + semRel + ' — ' + (dias[0] ? dias[0].fase : '') + '</div>';
-
-  html += '<div class="metric-grid">';
-  html += '<div class="metric-card"><div class="metric-val" style="color:' + stCor + '">' + pctS + '%</div><div class="metric-lbl">Conclusao</div></div>';
-  html += '<div class="metric-card"><div class="metric-val" style="color:#1e3a5f">' + feitosT + '/' + totalT + '</div><div class="metric-lbl">Tarefas</div></div>';
-  html += '<div class="metric-card"><div class="metric-val" style="color:#059669">' + diasConc + '/' + dias.length + '</div><div class="metric-lbl">Dias completos</div></div>';
-  html += '</div>';
-
-  html += '<div class="status-pill" style="background:' + stCor + '18;color:' + stCor + ';border:1px solid ' + stCor + '40">' + statusGeral + '</div>';
-
-  html += '<div class="section-title">Dias da semana</div>';
-  for (var k = 0; k < dias.length; k++) {
-    var dd = dias[k];
-    var p = getPctDia(dd);
-    var barC = p === 100 ? '#059669' : (p > 0 ? '#d97706' : '#e5e7eb');
-    html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:7px">';
-    html += '<div style="font-size:12px;color:#6b7280;width:92px;flex-shrink:0">' + dd.data + '</div>';
-    html += '<div style="flex:1;background:#e5e7eb;border-radius:5px;height:7px"><div style="background:' + barC + ';border-radius:5px;height:7px;width:' + p + '%"></div></div>';
-    html += '<div style="font-size:12px;font-weight:600;color:' + (p === 100 ? '#059669' : '#374151') + ';width:34px;text-align:right">' + p + '%</div></div>';
+  var tKeys=Object.keys(temasSet);
+  if(tKeys.length){
+    html+='<div class="section-title" style="margin-top:12px">Temas cobertos</div>';
+    for(var m=0;m<tKeys.length;m++){
+      var tema2=TEMAS[tKeys[m]]; if(!tema2) continue;
+      html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;margin-bottom:6px">';
+      html+='<span style="font-size:12px;flex:1;min-width:0;margin-right:8px;line-height:1.3">'+tema2.label+'</span>';
+      html+='<span style="font-size:11px;font-weight:700;color:'+tema2.cor+'">'+tema2.prob+'%</span></div>';
+    }
   }
-
-  html += '<div class="section-title" style="margin-top:12px">Temas cobertos</div>';
-  var tKeys = Object.keys(temasSet);
-  for (var m = 0; m < tKeys.length; m++) {
-    var tema = TEMAS[tKeys[m]];
-    if (!tema) continue;
-    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;margin-bottom:6px">';
-    html += '<span style="font-size:12px;flex:1;min-width:0;margin-right:8px;line-height:1.3">' + tema.label + '</span>';
-    html += '<span style="font-size:11px;font-weight:700;color:' + tema.cor + '">' + tema.prob + '%</span></div>';
-  }
-
-  html += '<div class="interp" style="margin-top:12px"><strong>Interpretacao:</strong> ' + interp + '</div></div>';
+  html+='<div class="interp" style="margin-top:12px"><strong>Interpretacao:</strong> '+interp+'</div></div>';
   document.getElementById("main-content").innerHTML = html;
 }
 
 function renderTemas() {
-  var html = '<p style="font-size:12px;color:#6b7280;margin-bottom:14px;line-height:1.55">Probabilidade baseada em 4 edicoes de provas (2022-2025), espelhos de correcao e padrao bibliografico.</p>';
-  var keys = Object.keys(TEMAS);
-  for (var i = 0; i < keys.length; i++) {
-    var t = TEMAS[keys[i]];
-    html += '<div class="tema-row">';
-    html += '<div class="tema-pct-badge" style="background:' + t.bg + ';color:' + t.cor + '">' + t.prob + '</div>';
-    html += '<div style="flex:1;min-width:0"><div class="tema-label">' + t.label + '</div>';
-    html += '<div class="tema-bar-wrap"><div class="tema-bar" style="background:' + t.cor + ';width:' + t.prob + '%"></div></div></div>';
-    html += '<div class="tema-nivel" style="color:' + t.cor + '">' + (t.prob >= 80 ? 'ALTA' : (t.prob >= 60 ? 'MEDIA' : 'RELEV.')) + '</div>';
-    html += '</div>';
+  var html='<p style="font-size:12px;color:#6b7280;margin-bottom:14px;line-height:1.55">Probabilidade baseada em 4 edicoes de provas (2022-2025), espelhos de correcao e padrao bibliografico.</p>';
+  var keys=Object.keys(TEMAS);
+  for(var i=0;i<keys.length;i++){
+    var t=TEMAS[keys[i]];
+    html+='<div class="tema-row"><div class="tema-pct-badge" style="background:'+t.bg+';color:'+t.cor+'">'+t.prob+'</div>';
+    html+='<div style="flex:1;min-width:0"><div class="tema-label">'+t.label+'</div>';
+    html+='<div class="tema-bar-wrap"><div class="tema-bar" style="background:'+t.cor+';width:'+t.prob+'%"></div></div></div>';
+    html+='<div class="tema-nivel" style="color:'+t.cor+'">'+(t.prob>=80?'ALTA':(t.prob>=60?'MEDIA':'RELEV.'))+'</div></div>';
   }
-  html += '<div style="margin-top:12px;padding:10px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;font-size:11px;color:#92400e;line-height:1.55"><strong>Metodologia:</strong> frequencia como tema central nas provas + peso nos espelhos de correcao + presenca na bibliografia obrigatoria 2027.</div>';
+  html+='<div style="margin-top:12px;padding:10px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;font-size:11px;color:#92400e;line-height:1.55"><strong>Metodologia:</strong> frequencia como tema central + peso nos espelhos de correcao + presenca na bibliografia obrigatoria 2027.</div>';
   document.getElementById("main-content").innerHTML = html;
 }
 
 // ─── EVENTOS ─────────────────────────────────────────────────────────────────
-function switchTab(tab) {
-  tabAtiva = tab;
-  var tabs = ['roteiro','semanas','relatorio','temas'];
-  for (var i = 0; i < tabs.length; i++) {
-    var btn = document.getElementById('btn-' + tabs[i]);
-    if (btn) btn.className = 'nav-btn' + (tabs[i] === tab ? ' active' : '');
+function switchTab(tab){
+  tabAtiva=tab;
+  var tabs=['roteiro','semanas','relatorio','temas'];
+  for(var i=0;i<tabs.length;i++){
+    var b=document.getElementById('btn-'+tabs[i]);
+    if(b) b.className='nav-btn'+(tabs[i]===tab?' active':'');
   }
   render();
 }
-
-function setDia(id) {
-  diaAtivo = id;
-  var d = getDia(id);
-  semAtiva = d ? d.sem : 1;
-  render();
-}
-
-function setSem(s) {
-  semAtiva = s;
-  var dias = getDiasSem(s);
-  if (dias.length > 0) diaAtivo = dias[0].id;
-  render();
-}
-
-function setSemRel(s) {
-  semRel = s;
-  renderRelatorio();
-}
-
-function goToDay(id) {
-  diaAtivo = id;
-  var d = getDia(id);
-  semAtiva = d ? d.sem : 1;
-  tabAtiva = 'roteiro';
-  switchTab('roteiro');
-}
-
-function toggleTask(diaId, idx) {
-  if (!progresso[diaId]) {
-    var dia = getDia(diaId);
-    progresso[diaId] = [];
-    for (var i = 0; i < dia.tarefas.length; i++) progresso[diaId].push(false);
+function setDia(id){diaAtivo=id;var d=getDia(id);semAtiva=d?d.sem:1;render();}
+function setSem(s){semAtiva=s;var dias=getDiasSem(s);if(dias.length)diaAtivo=dias[0].id;render();}
+function setSemRel(s){semRel=s;renderRelatorio();}
+function goToDay(id){diaAtivo=id;var d=getDia(id);semAtiva=d?d.sem:1;tabAtiva='roteiro';switchTab('roteiro');}
+function toggleTask(diaId,idx){
+  if(!progresso[diaId]){
+    var dia=getDia(diaId);
+    progresso[diaId]=dia.tarefas.map(function(){return false;});
   }
-  progresso[diaId][idx] = !progresso[diaId][idx];
-  saveProg();
+  while(progresso[diaId].length<=idx) progresso[diaId].push(false);
+  progresso[diaId][idx]=!progresso[diaId][idx];
+  salvar();
   render();
 }
-
-function render() {
-  if (tabAtiva === 'roteiro') renderRoteiro();
-  else if (tabAtiva === 'semanas') renderSemanas();
-  else if (tabAtiva === 'relatorio') renderRelatorio();
-  else if (tabAtiva === 'temas') renderTemas();
+function render(){
+  if(tabAtiva==='roteiro') renderRoteiro();
+  else if(tabAtiva==='semanas') renderSemanas();
+  else if(tabAtiva==='relatorio') renderRelatorio();
+  else if(tabAtiva==='temas') renderTemas();
   updateHeader();
 }
 
