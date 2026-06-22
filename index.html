@@ -88,9 +88,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tema-bar-wrap{height:4px;background:#e5e7eb;border-radius:4px;margin-top:5px}
 .tema-bar{height:4px;border-radius:4px}
 .section-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.install-card{background:var(--navy);color:#fff;border-radius:var(--radius);padding:14px 16px;margin-bottom:12px}
-.install-card h3{font-size:13px;font-weight:700;margin-bottom:6px}
-.install-card p{font-size:12px;opacity:.85;line-height:1.5}
 </style>
 </head>
 <body>
@@ -474,7 +471,7 @@ function renderRoteiro() {
   var diaObj = getDia(diaAtivo);
   var pctDia = getPctDia(diaObj);
 
-  var html = '<div class="install-card"><h3>📱 Instalar no iPhone</h3><p>Safari: toque em Compartilhar (quadrado c/ seta) &rarr; "Adicionar a Tela de Inicio"</p></div>';
+  var html = '';
 
   // chips semanas
   html += '<div class="chip-row">';
