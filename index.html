@@ -432,7 +432,6 @@ var diaAtivo = 1;
 var semAtiva = 1;
 var tabAtiva = "roteiro";
 var semRel = 1;
-var modalOpcaoSel = null;
 var modalDiaId = null;
 
 function salvar() {
@@ -585,87 +584,408 @@ function abrirModalDiaAtivo() {
   abrirModal(diaAtivo);
 }
 
-function abrirModal(diaId) {
-  var pendentes = getPendentesNoDia(diaId);
-  if (!pendentes.length) return;
+// ─── ENGINE DE REMANEJO ESTRUTURAL ───────────────────────────────────────────
+// Conceitos:
+// BLOCO: conjunto de tarefas do mesmo dia que devem ser estudadas juntas
+//        (ex: Aula + Leitura + Fichamento do mesmo tema)
+// CASCATA: quando um bloco recua, os blocos seguintes recuam junto
+// COMPRESSAO: reducao do tempo de tarefas de baixo peso para abrir espaco
+// planoRemanejo: [{tar, destId, minOriginal, minComprimido, comprimida}]
+var planoRemanejo = [];
+// compressoesAplicadas: {diaId: [{tarIdx, novoMin}]}
+var compressoesAplicadas = {};
 
-  modalDiaId = diaId;
-  modalOpcaoSel = null;
+// Peso pedagogico de cada tipo (quanto pode ser comprimido)
+var PESO_COMPRESSAO = {
+  simulado:   0,    // nunca comprime
+  aula:       0,    // nunca comprime
+  leitura:    0.3,  // comprime ate 30% se alta prob, 50% se baixa
+  pratica:    0.5,  // comprime ate 50%
+  fichamento: 0.5,  // comprime ate 50%
+  revisao:    0.6,  // comprime ate 60%
+};
 
-  var base = getDia(diaId);
-  document.getElementById("modal-title").textContent = "Tarefas nao concluidas — " + base.data;
-  document.getElementById("modal-sub").textContent = pendentes.length + " tarefa(s) nao feita(s). Escolha como deseja remaneja-las:";
-
-  // Lista de tarefas pendentes
-  var listHtml = "";
-  for (var i = 0; i < pendentes.length; i++) {
-    var t = pendentes[i];
-    var tc = TIPO[t.tipo] || TIPO.revisao;
-    listHtml += '<div class="modal-task-item"><span class="task-badge ' + tc.cls + '" style="flex-shrink:0">' + tc.label + '</span><span>' + t.t + ' (' + t.min + 'min)</span></div>';
-  }
-  document.getElementById("modal-task-list").innerHTML = listHtml;
-
-  // Calcular opcoes
-  var proxDia = null;
-  var fds = proximoFDS(diaId);
-  var futuros = diasFuturos(diaId);
-  if (futuros.length > 0) proxDia = futuros[0];
-
-  var totalPendMin = pendentes.reduce(function(a,t){ return a+t.min; }, 0);
-
-  var opcoes = "";
-
-  // Opcao 1: dia seguinte
-  if (proxDia) {
-    var cargaProx = getCargaDia(proxDia.id);
-    var limProx = getLimiteDia(proxDia.id);
-    var novaProx = cargaProx + totalPendMin;
-    var aviso = novaProx > limProx ? " (requer extensao de " + (novaProx-limProx) + "min)" : " (cabe no limite atual)";
-    opcoes += '<div class="modal-option" id="op1" onclick="selOpcao(1)"><div class="modal-option-icon">➡️</div><div><div class="modal-option-title">Dia seguinte (' + proxDia.data + ')</div><div class="modal-option-desc">Adicionar ao inicio de amanha com prioridade.' + aviso + '</div></div></div>';
-  }
-
-  // Opcao 2: proximo FDS
-  if (fds && fds.id !== (proxDia ? proxDia.id : -1)) {
-    var cargaFds = getCargaDia(fds.id);
-    var limFds = getLimiteDia(fds.id);
-    var novaFds = cargaFds + totalPendMin;
-    var avisoFds = novaFds > limFds ? " (requer extensao de " + (novaFds-limFds) + "min)" : " (cabe no limite atual)";
-    opcoes += '<div class="modal-option" id="op2" onclick="selOpcao(2)"><div class="modal-option-icon">📅</div><div><div class="modal-option-title">Proximo fim de semana (' + fds.data + ')</div><div class="modal-option-desc">Aproveitar o tempo extra do FDS.' + avisoFds + '</div></div></div>';
-  }
-
-  // Opcao 3: distribuir ao longo da semana
-  if (futuros.length >= 2) {
-    var diasSemana = [];
-    for (var k = 0; k < futuros.length && diasSemana.length < 4; k++) {
-      if (futuros[k].tipo === "util") diasSemana.push(futuros[k]);
-    }
-    if (diasSemana.length >= 2) {
-      opcoes += '<div class="modal-option" id="op3" onclick="selOpcao(3)"><div class="modal-option-icon">📊</div><div><div class="modal-option-title">Distribuir ao longo da semana</div><div class="modal-option-desc">Dividir as tarefas entre os proximos ' + diasSemana.length + ' dias uteis, adicionando ~' + Math.ceil(totalPendMin/diasSemana.length) + 'min por dia.</div></div></div>';
-    }
-  }
-
-  if (!opcoes) {
-    opcoes = '<div class="alert-banner alert-danger"><span class="alert-icon">⚠️</span><span>Nao ha dias uteis suficientes para remanejo. As tarefas serao descartadas ou devem ser incorporadas manualmente.</span></div>';
-    document.getElementById("modal-confirmar").style.display = "none";
-  } else {
-    document.getElementById("modal-confirmar").style.display = "";
-  }
-
-  document.getElementById("modal-opcoes").innerHTML = opcoes;
-  document.getElementById("modal").style.display = "flex";
+function getTipoCompressaoMax(tar) {
+  var base = PESO_COMPRESSAO[tar.tipo] || 0;
+  if (base === 0) return 0;
+  // leitura de alta prob e menos comprimivel
+  if (tar.tipo === 'leitura' && tar.prob >= 80) return 0.2;
+  return base;
 }
 
-function selOpcao(n) {
-  modalOpcaoSel = n;
-  for (var i = 1; i <= 3; i++) {
-    var el = document.getElementById("op" + i);
-    if (el) el.className = "modal-option" + (i === n ? " selected" : "");
+// Identificar blocos pedagogicos num dia
+// Um bloco e um grupo de tarefas relacionadas pelo tema (identificadas pelo indice sequencial)
+// Regra simplificada: tarefas consecutivas que nao sejam simulado formam um bloco
+// Se o dia tem aula+leitura+fichamento sobre o mesmo tema, sao um bloco
+function identificarBlocos(diaId) {
+  var base = getDia(diaId);
+  var pendentes = getPendentesNoDia(diaId);
+  if (!pendentes.length) return [];
+
+  // Agrupar pendentes em blocos: aula/leitura/fichamento juntos; pratica/revisao podem ser separadas
+  var blocos = [];
+  var blocoAtual = [];
+
+  for (var i = 0; i < pendentes.length; i++) {
+    var t = pendentes[i];
+    if (t.tipo === 'simulado') {
+      // simulado nunca entra em bloco — e inegociavel
+      if (blocoAtual.length) { blocos.push(blocoAtual); blocoAtual = []; }
+      continue;
+    }
+    // aula, leitura, fichamento formam bloco juntos
+    if (t.tipo === 'aula' || t.tipo === 'leitura' || t.tipo === 'fichamento') {
+      blocoAtual.push(t);
+    } else {
+      // pratica e revisao: se ha bloco em curso, fecha e cria novo
+      if (blocoAtual.length) { blocos.push(blocoAtual); blocoAtual = []; }
+      blocos.push([t]);
+    }
   }
+  if (blocoAtual.length) blocos.push(blocoAtual);
+  return blocos;
+}
+
+// Calcular espaco disponivel num dia considerando compressoes possiveis
+function espacoDisponivelComCompressao(diaId, minutosNecessarios) {
+  var base = getDia(diaId);
+  var lim = getLimiteDia(diaId);
+  var cargaAtual = getCargaDia(diaId);
+  var espacoLivre = lim - cargaAtual;
+  if (espacoLivre >= minutosNecessarios) return { cabe: true, compressoes: [], espacoTotal: espacoLivre };
+
+  // Tentar comprimir tarefas existentes no dia
+  var compressoesPosiveis = [];
+  var ganhoTotal = 0;
+  var tarefasBase = base.tarefas;
+  for (var i = 0; i < tarefasBase.length; i++) {
+    var t = tarefasBase[i];
+    var maxComp = getTipoCompressaoMax(t);
+    if (maxComp > 0) {
+      var ganho = Math.floor(t.min * maxComp);
+      if (ganho > 0) {
+        compressoesPosiveis.push({ tarIdx: i, tar: t, ganho: ganho, novoMin: t.min - ganho });
+        ganhoTotal += ganho;
+      }
+    }
+    if (espacoLivre + ganhoTotal >= minutosNecessarios) break;
+  }
+
+  var espacoTotal = espacoLivre + ganhoTotal;
+  return {
+    cabe: espacoTotal >= minutosNecessarios,
+    compressoes: compressoesPosiveis,
+    espacoTotal: espacoTotal
+  };
+}
+
+// Motor principal: calcular plano estrutural de remanejo
+function calcularPlanoEstruturalCompleto(diaId) {
+  var blocos = identificarBlocos(diaId);
+  if (!blocos.length) return { plano: [], compressoes: {}, alertas: [], descartes: [] };
+
+  var futuros = diasFuturos(diaId);
+  if (!futuros.length) return { plano: [], compressoes: {}, alertas: ['Sem dias futuros disponiveis.'], descartes: [] };
+
+  var plano = [];
+  var compressoes = {};
+  var alertas = [];
+  var descartes = [];
+
+  // Simular carga adicionada por dia para nao sobrecarregar
+  var cargaAdicionadaSim = {};
+
+  for (var b = 0; b < blocos.length; b++) {
+    var bloco = blocos[b];
+    var minBloco = bloco.reduce(function(a, t) { return a + t.min; }, 0);
+    var probMaxBloco = bloco.reduce(function(a, t) { return Math.max(a, t.prob); }, 0);
+
+    // Encontrar melhor dia destino para este bloco
+    var diaDestino = null;
+    var compressoesParaBloco = [];
+
+    for (var f = 0; f < futuros.length; f++) {
+      var fd = futuros[f];
+      var cargaBase = getCargaDia(fd.id);
+      var cargaSim = cargaAdicionadaSim[fd.id] || 0;
+      var cargaTotal = cargaBase + cargaSim;
+      var lim = getLimiteDia(fd.id);
+
+      // Verificar se cabe sem compressao
+      if (cargaTotal + minBloco <= lim * 1.1) {
+        diaDestino = fd;
+        break;
+      }
+
+      // Tentar com compressao
+      var analise = espacoDisponivelComCompressao(fd.id, minBloco - (lim - cargaTotal));
+      if (analise.cabe) {
+        diaDestino = fd;
+        compressoesParaBloco = analise.compressoes;
+        break;
+      }
+
+      // Blocos de alta prioridade: aceitar ate 130% de carga
+      if (probMaxBloco >= 80 && cargaTotal + minBloco <= lim * 1.3) {
+        diaDestino = fd;
+        alertas.push('Dia ' + fd.data + ' ficara sobrecarregado para acomodar conteudo de alta prioridade (' + Math.round(((cargaTotal+minBloco)/lim)*100) + '% da carga).');
+        break;
+      }
+    }
+
+    if (!diaDestino) {
+      // Nao encontrou dia — sugerir descarte se baixa prioridade
+      if (probMaxBloco < 60) {
+        descartes.push({ bloco: bloco, motivo: 'Baixa prioridade (' + probMaxBloco + '%) e sem espaco disponivel nos proximos dias.' });
+      } else {
+        // Forcear no ultimo dia disponivel com alerta
+        diaDestino = futuros[futuros.length - 1];
+        alertas.push('Bloco de alta prioridade alocado em ' + diaDestino.data + ' com sobrecarga — roteiro em risco.');
+      }
+    }
+
+    if (diaDestino) {
+      // Registrar compressoes
+      if (compressoesParaBloco.length) {
+        if (!compressoes[diaDestino.id]) compressoes[diaDestino.id] = [];
+        for (var c = 0; c < compressoesParaBloco.length; c++) {
+          compressoes[diaDestino.id].push(compressoesParaBloco[c]);
+        }
+      }
+
+      // Adicionar tarefas do bloco ao plano
+      var minBlocoSim = 0;
+      for (var t2 = 0; t2 < bloco.length; t2++) {
+        plano.push({ tar: bloco[t2], destId: diaDestino.id, comprimida: false });
+        minBlocoSim += bloco[t2].min;
+      }
+      cargaAdicionadaSim[diaDestino.id] = (cargaAdicionadaSim[diaDestino.id] || 0) + minBlocoSim;
+    }
+  }
+
+  // Verificar dias que ficaram acima de 150% e sugerir descartes
+  var dIds = Object.keys(cargaAdicionadaSim);
+  for (var d = 0; d < dIds.length; d++) {
+    var did = parseInt(dIds[d]);
+    var cargaFinal = getCargaDia(did) + cargaAdicionadaSim[did];
+    var limDia = getLimiteDia(did);
+    if (cargaFinal > limDia * 1.5) {
+      // Sugerir descarte das tarefas de menor prioridade nesse dia
+      var tarefasNoDia = [];
+      for (var p2 = 0; p2 < plano.length; p2++) {
+        if (plano[p2].destId === did) tarefasNoDia.push(plano[p2].tar);
+      }
+      tarefasNoDia.sort(function(a,b){ return a.prob - b.prob; });
+      if (tarefasNoDia.length && tarefasNoDia[0].prob < 60) {
+        descartes.push({
+          bloco: [tarefasNoDia[0]],
+          motivo: 'Dia ' + getDia(did).data + ' sobrecarregado (' + Math.round((cargaFinal/limDia)*100) + '%). Considere descartar esta tarefa de baixa prioridade.'
+        });
+      }
+    }
+  }
+
+  return { plano: plano, compressoes: compressoes, alertas: alertas, descartes: descartes };
+}
+
+function getCargaComPlano(diaId, plano) {
+  var base = getCargaDia(diaId);
+  for (var i = 0; i < plano.length; i++) {
+    if (plano[i].destId === diaId) base += plano[i].tar.min;
+  }
+  return base;
+}
+
+function renderModalPlano() {
+  if (!modalDiaId) return;
+  var futuros = diasFuturos(modalDiaId);
+  var resultado = window._planoResultado || { plano: planoRemanejo, compressoes: compressoesAplicadas, alertas: [], descartes: [] };
+
+  var html = '';
+
+  // Alertas
+  if (resultado.alertas && resultado.alertas.length) {
+    for (var a = 0; a < resultado.alertas.length; a++) {
+      html += '<div class="alert-banner alert-warning"><span class="alert-icon">⚡</span><span>' + resultado.alertas[a] + '</span></div>';
+    }
+  }
+
+  // Sugestoes de descarte
+  if (resultado.descartes && resultado.descartes.length) {
+    html += '<div class="alert-banner alert-danger"><span class="alert-icon">⚠️</span><div><strong>Sugestao de descarte:</strong>';
+    for (var d = 0; d < resultado.descartes.length; d++) {
+      var desc = resultado.descartes[d];
+      html += '<div style="margin-top:4px;font-size:11px">' + desc.motivo + '</div>';
+      for (var dt = 0; dt < desc.bloco.length; dt++) {
+        html += '<div style="margin-top:2px;font-size:11px;color:#6b7280">→ ' + desc.bloco[dt].t + '</div>';
+      }
+    }
+    html += '</div></div>';
+  }
+
+  // Compressoes propostas
+  var compKeys = Object.keys(resultado.compressoes || {});
+  if (compKeys.length) {
+    html += '<div class="alert-banner alert-info"><span class="alert-icon">✂️</span><div><strong>Compressoes propostas para abrir espaco:</strong>';
+    for (var ck = 0; ck < compKeys.length; ck++) {
+      var cDiaId = parseInt(compKeys[ck]);
+      var cDia = getDia(cDiaId);
+      var comps = resultado.compressoes[cDiaId];
+      for (var ci = 0; ci < comps.length; ci++) {
+        var comp = comps[ci];
+        html += '<div style="margin-top:4px;font-size:11px">' + cDia.data + ': "' + comp.tar.t.substring(0,40) + '..." ' + comp.tar.min + 'min → ' + comp.novoMin + 'min (-' + comp.ganho + 'min)</div>';
+      }
+    }
+    html += '</div></div>';
+  }
+
+  // Lista de tarefas com destino editavel
+  html += '<div style="font-size:11px;color:#6b7280;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:1px">Plano de redistribuicao — ajuste se necessario</div>';
+
+  // Agrupar por bloco (tarefas com mesmo destId consecutivas)
+  var blocoAtualRender = [];
+  var blocos = [];
+  for (var pi = 0; pi < planoRemanejo.length; pi++) {
+    var item = planoRemanejo[pi];
+    if (blocoAtualRender.length === 0 || blocoAtualRender[blocoAtualRender.length-1].destId === item.destId) {
+      blocoAtualRender.push(item);
+    } else {
+      blocos.push(blocoAtualRender);
+      blocoAtualRender = [item];
+    }
+  }
+  if (blocoAtualRender.length) blocos.push(blocoAtualRender);
+
+  for (var bi = 0; bi < blocos.length; bi++) {
+    var bItems = blocos[bi];
+    var bDestId = bItems[0].destId;
+    var bDia = getDia(bDestId);
+    var bMin = bItems.reduce(function(a,x){ return a+x.tar.min; }, 0);
+    var bProb = bItems.reduce(function(a,x){ return Math.max(a,x.tar.prob); }, 0);
+    var probCor = bProb >= 80 ? '#b91c1c' : bProb >= 60 ? '#d97706' : '#0369a1';
+
+    html += '<div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:10px 12px;margin-bottom:10px">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+    html += '<span style="font-size:11px;font-weight:700;color:#1e3a5f">📦 Bloco (' + bItems.length + ' tarefa' + (bItems.length>1?'s':'') + ' · ' + bMin + 'min)</span>';
+    html += '<span style="font-size:10px;font-weight:700;color:' + probCor + '">' + bProb + '% prob.</span>';
+    html += '</div>';
+
+    // Tarefas do bloco
+    for (var ti = 0; ti < bItems.length; ti++) {
+      var bItem = bItems[ti];
+      var planoIdx = planoRemanejo.indexOf(bItem);
+      var tc = TIPO[bItem.tar.tipo] || TIPO.revisao;
+      html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;padding:4px 0;border-bottom:1px solid #f1f5f9">';
+      html += '<span class="task-badge ' + tc.cls + '">' + tc.label + '</span>';
+      html += '<span style="font-size:12px;flex:1;color:#374151;line-height:1.3">' + bItem.tar.t.substring(0,50) + (bItem.tar.t.length>50?'...':'') + '</span>';
+      html += '<span style="font-size:11px;color:#6b7280">' + bItem.tar.min + 'min</span>';
+      html += '</div>';
+    }
+
+    // Seletor de dia destino para o bloco inteiro
+    html += '<div style="display:flex;align-items:center;gap:8px;margin-top:8px">';
+    html += '<span style="font-size:11px;color:#6b7280;flex-shrink:0">Dia destino:</span>';
+    html += '<select onchange="alterarDestinoBloco(' + bi + ',this.value)" style="flex:1;font-size:12px;padding:5px 8px;border-radius:7px;border:1px solid #e2e8f0;background:#fff;color:#1e3a5f;font-weight:600">';
+    for (var fi = 0; fi < futuros.length && fi < 14; fi++) {
+      var fd2 = futuros[fi];
+      var cargaFd = getCargaComPlano(fd2.id, planoRemanejo);
+      var limFd = getLimiteDia(fd2.id);
+      var pctCarga = Math.round((cargaFd / limFd) * 100);
+      var avisoOpt = pctCarga > 150 ? ' ⚠️ muito pesado' : pctCarga > 120 ? ' ⚡ pesado' : '';
+      var selOpt = fd2.id === bDestId ? ' selected' : '';
+      html += '<option value="' + fd2.id + '"' + selOpt + '>' + fd2.data + ' — ' + pctCarga + '% carga' + avisoOpt + '</option>';
+    }
+    html += '</select>';
+    html += '</div></div>';
+  }
+
+  // Preview de carga por dia afetado
+  html += '<div style="margin-top:4px;font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Impacto nos dias destino</div>';
+  var diasAfetados = {};
+  for (var pm = 0; pm < planoRemanejo.length; pm++) diasAfetados[planoRemanejo[pm].destId] = true;
+  var dAKeys = Object.keys(diasAfetados);
+  for (var da = 0; da < dAKeys.length; da++) {
+    var daId = parseInt(dAKeys[da]);
+    var daObj = getDia(daId);
+    var cargaT = getCargaComPlano(daId, planoRemanejo);
+    var limT = getLimiteDia(daId);
+    var pctT = Math.round((cargaT / limT) * 100);
+    var barCorT = pctT > 150 ? '#b91c1c' : pctT > 120 ? '#d97706' : '#059669';
+    var msgT = pctT > 150 ? ' ⚠️ Redistribua' : pctT > 120 ? ' ⚡ Pesado' : ' ✓ OK';
+    html += '<div style="margin-bottom:8px">';
+    html += '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">';
+    html += '<span style="font-weight:600;color:#1e3a5f">' + daObj.data + '</span>';
+    html += '<span style="color:' + barCorT + ';font-weight:700">' + cargaT + '/' + limT + 'min (' + pctT + '%)' + msgT + '</span>';
+    html += '</div>';
+    html += '<div style="background:#e5e7eb;border-radius:5px;height:7px">';
+    html += '<div style="background:' + barCorT + ';border-radius:5px;height:7px;width:' + Math.min(pctT,100) + '%"></div>';
+    html += '</div></div>';
+  }
+
+  document.getElementById("modal-opcoes").innerHTML = html;
+  document.getElementById("modal-confirmar").style.display = "";
+}
+
+function alterarDestinoBloco(blocoIdx, novoDiaId) {
+  // Reconstruir lista de blocos e mover todos os itens do bloco
+  var blocos = [];
+  var blocoAtualRender = [];
+  for (var pi = 0; pi < planoRemanejo.length; pi++) {
+    var item = planoRemanejo[pi];
+    if (blocoAtualRender.length === 0 || blocoAtualRender[blocoAtualRender.length-1].destId === item.destId) {
+      blocoAtualRender.push(item);
+    } else {
+      blocos.push(blocoAtualRender);
+      blocoAtualRender = [item];
+    }
+  }
+  if (blocoAtualRender.length) blocos.push(blocoAtualRender);
+
+  if (blocos[blocoIdx]) {
+    var novoId = parseInt(novoDiaId);
+    for (var i = 0; i < blocos[blocoIdx].length; i++) {
+      blocos[blocoIdx][i].destId = novoId;
+    }
+    // Reconstruir planoRemanejo
+    planoRemanejo = [];
+    for (var b = 0; b < blocos.length; b++) {
+      for (var t = 0; t < blocos[b].length; t++) {
+        planoRemanejo.push(blocos[b][t]);
+      }
+    }
+  }
+  renderModalPlano();
+}
+
+function abrirModal(diaId) {
+  var pendentes = getPendentesNoDia(diaId);
+  if (!pendentes.length) { alert("Nenhuma tarefa pendente neste dia."); return; }
+
+  modalDiaId = diaId;
+
+  var resultado = calcularPlanoEstruturalCompleto(diaId);
+  window._planoResultado = resultado;
+  planoRemanejo = resultado.plano;
+  compressoesAplicadas = resultado.compressoes || {};
+
+  if (!planoRemanejo.length) {
+    alert("Nao ha dias futuros disponiveis para remanejo.");
+    return;
+  }
+
+  var base = getDia(diaId);
+  document.getElementById("modal-title").textContent = "Remanejo Estrutural — " + base.data;
+  document.getElementById("modal-sub").textContent = "O app analisou " + pendentes.length + " tarefa(s) pendente(s) e organizou em blocos pedagogicos. Ajuste os dias destino se quiser e confirme.";
+  document.getElementById("modal-task-list").innerHTML = "";
+
+  renderModalPlano();
+  document.getElementById("modal").style.display = "flex";
 }
 
 function fecharModal() {
   document.getElementById("modal").style.display = "none";
-  modalDiaId = null; modalOpcaoSel = null;
+  modalDiaId = null; planoRemanejo = []; compressoesAplicadas = {};
+  window._planoResultado = null;
 }
 
 function fecharModalFora(e) {
@@ -673,35 +993,231 @@ function fecharModalFora(e) {
 }
 
 function confirmarRemanejo() {
-  if (!modalDiaId || !modalOpcaoSel) { alert("Selecione uma opcao de remanejo."); return; }
+  if (!modalDiaId || !planoRemanejo.length) { fecharModal(); return; }
+  var base = getDia(modalDiaId);
 
-  var pendentes = getPendentesNoDia(modalDiaId);
-  if (!pendentes.length) { fecharModal(); return; }
+  // Verificar sobrecarga acima de 160%
+  var diasAfetados = {};
+  for (var i = 0; i < planoRemanejo.length; i++) diasAfetados[planoRemanejo[i].destId] = true;
+  var muitoPesado = false;
+  var dKeys = Object.keys(diasAfetados);
+  for (var j = 0; j < dKeys.length; j++) {
+    var did = parseInt(dKeys[j]);
+    var cargaT = getCargaComPlano(did, planoRemanejo);
+    var limT = getLimiteDia(did);
+    if (cargaT > limT * 1.6) { muitoPesado = true; break; }
+  }
+  if (muitoPesado) {
+    var ok = confirm("Um ou mais dias ficaram muito pesados (acima de 160% da carga). Confirma mesmo assim?");
+    if (!ok) return;
+  }
 
+  // Aplicar compressoes
+  var cKeys = Object.keys(compressoesAplicadas);
+  for (var ck = 0; ck < cKeys.length; ck++) {
+    var cDiaId = parseInt(cKeys[ck]);
+    var comps = compressoesAplicadas[cDiaId];
+    if (!compressoesAplic) var compressoesAplic = {};
+    if (!compressoesAplic[cDiaId]) compressoesAplic[cDiaId] = [];
+    for (var ci = 0; ci < comps.length; ci++) {
+      compressoesAplic[cDiaId].push(comps[ci]);
+      // Registrar reducao de tempo na tarefa original via cargaExtra negativo
+      var ganhoTotal2 = 0;
+      for (var ci2 = 0; ci2 < compressoesAplic[cDiaId].length; ci2++) {
+        ganhoTotal2 += compressoesAplic[cDiaId][ci2].ganho;
+      }
+      // Usar cargaExtra como reducao (negativo)
+      if (!cargaExtra[cDiaId]) cargaExtra[cDiaId] = 0;
+      cargaExtra[cDiaId] = -ganhoTotal2;
+    }
+  }
+
+  // Aplicar remanejo por bloco
+  var blocos = [];
+  var blocoAtualConf = [];
+  for (var pi = 0; pi < planoRemanejo.length; pi++) {
+    var item = planoRemanejo[pi];
+    if (blocoAtualConf.length === 0 || blocoAtualConf[blocoAtualConf.length-1].destId === item.destId) {
+      blocoAtualConf.push(item);
+    } else {
+      blocos.push(blocoAtualConf);
+      blocoAtualConf = [item];
+    }
+  }
+  if (blocoAtualConf.length) blocos.push(blocoAtualConf);
+
+  for (var b = 0; b < blocos.length; b++) {
+    var bloco = blocos[b];
+    var tarefasBloco = bloco.map(function(x){ return x.tar; });
+    remanejarPara(tarefasBloco, bloco[0].destId, base.data);
+  }
+
+  fecharModal();
+  render();
+  updateStrip();
+}
+      destId = proxDia.id; // fallback
+      for (var k = 0; k < diasComFolga.length; k++) {
+        var d = diasComFolga[k];
+        var cargaBase = getCargaDia(d.id);
+        var cargaAdicSim = cargaSim[d.id] || 0;
+        var limD = getLimiteDia(d.id);
+        if (cargaBase + cargaAdicSim + t.min <= limD * 1.2) {
+          destId = d.id; break;
+        }
+      }
+    } else {
+      // baixa: FDS ou dia com mais folga
+      destId = fds ? fds.id : (diasComFolga.length ? diasComFolga[diasComFolga.length-1].id : proxDia.id);
+    }
+    cargaSim[destId] = (cargaSim[destId] || 0) + t.min;
+    plano.push({tar: t, destId: destId});
+  }
+  return plano;
+}
+
+function getCargaComPlano(diaId, plano) {
+  var base = getCargaDia(diaId);
+  for (var i = 0; i < plano.length; i++) {
+    if (plano[i].destId === diaId) base += plano[i].tar.min;
+  }
+  return base;
+}
+
+function renderModalPlano() {
+  if (!modalDiaId) return;
   var base = getDia(modalDiaId);
   var futuros = diasFuturos(modalDiaId);
-  var fds = proximoFDS(modalDiaId);
 
-  if (modalOpcaoSel === 1) {
-    // Dia seguinte
-    var proxDia = futuros.length ? futuros[0] : null;
-    if (proxDia) remanejarPara(pendentes, proxDia.id, base.data);
-  } else if (modalOpcaoSel === 2) {
-    // FDS
-    if (fds) remanejarPara(pendentes, fds.id, base.data);
-  } else if (modalOpcaoSel === 3) {
-    // Distribuir
-    var diasUtil = [];
-    for (var k = 0; k < futuros.length && diasUtil.length < 4; k++) {
-      if (futuros[k].tipo === "util") diasUtil.push(futuros[k]);
+  // Montar HTML do plano editavel
+  var html = '';
+  // Resumo por dia destino
+  var resumo = {};
+  for (var i = 0; i < planoRemanejo.length; i++) {
+    var p = planoRemanejo[i];
+    if (!resumo[p.destId]) resumo[p.destId] = {min:0, count:0};
+    resumo[p.destId].min += p.tar.min;
+    resumo[p.destId].count++;
+  }
+
+  // Lista de tarefas com seletor de dia destino
+  html += '<div style="font-size:11px;color:#6b7280;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:1px">Plano de redistribuicao — ajuste se necessario</div>';
+
+  for (var j = 0; j < planoRemanejo.length; j++) {
+    var item = planoRemanejo[j];
+    var tc = TIPO[item.tar.tipo] || TIPO.revisao;
+    var probCor = item.tar.prob >= 80 ? '#b91c1c' : item.tar.prob >= 60 ? '#d97706' : '#0369a1';
+
+    html += '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;margin-bottom:8px">';
+    html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap">';
+    html += '<span class="task-badge ' + tc.cls + '">' + tc.label + '</span>';
+    html += '<span style="font-size:10px;font-weight:700;color:' + probCor + '">' + item.tar.prob + '% prob.</span>';
+    html += '<span style="font-size:11px;color:#6b7280">' + item.tar.min + 'min</span>';
+    html += '</div>';
+    html += '<div style="font-size:12px;color:#1f2937;margin-bottom:8px;line-height:1.4">' + item.tar.t + '</div>';
+    html += '<div style="display:flex;align-items:center;gap:8px">';
+    html += '<span style="font-size:11px;color:#6b7280;flex-shrink:0">Ir para:</span>';
+    html += '<select onchange="alterarDestino(' + j + ',this.value)" style="flex:1;font-size:12px;padding:5px 8px;border-radius:7px;border:1px solid #e2e8f0;background:#fff;color:#1e3a5f;font-weight:600">';
+    for (var k = 0; k < futuros.length && k < 14; k++) {
+      var fd = futuros[k];
+      var cargaFd = getCargaComPlano(fd.id, planoRemanejo);
+      var limFd = getLimiteDia(fd.id);
+      var pctCarga = Math.round((cargaFd / limFd) * 100);
+      var aviso = pctCarga > 150 ? ' ⚠️ muito pesado' : pctCarga > 120 ? ' ⚡ pesado' : '';
+      var sel = fd.id === item.destId ? ' selected' : '';
+      html += '<option value="' + fd.id + '"' + sel + '>' + fd.data + ' — ' + pctCarga + '% carga' + aviso + '</option>';
     }
-    var por = Math.ceil(pendentes.length / Math.max(diasUtil.length, 1));
-    var idx = 0;
-    for (var d = 0; d < diasUtil.length && idx < pendentes.length; d++) {
-      var lote = pendentes.slice(idx, idx + por);
-      remanejarPara(lote, diasUtil[d].id, base.data);
-      idx += por;
-    }
+    html += '</select>';
+    html += '</div></div>';
+  }
+
+  // Preview de carga por dia afetado
+  html += '<div style="margin-top:12px;font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Impacto nos dias destino</div>';
+  var diasAfetados = {};
+  for (var m = 0; m < planoRemanejo.length; m++) diasAfetados[planoRemanejo[m].destId] = true;
+  var dKeys = Object.keys(diasAfetados);
+  for (var n = 0; n < dKeys.length; n++) {
+    var did = parseInt(dKeys[n]);
+    var dObj = getDia(did);
+    var cargaTotal = getCargaComPlano(did, planoRemanejo);
+    var limTotal = getLimiteDia(did);
+    var pct = Math.round((cargaTotal / limTotal) * 100);
+    var barCor = pct > 150 ? '#b91c1c' : pct > 120 ? '#d97706' : '#059669';
+    var alertMsg = pct > 150 ? ' ⚠️ Muito pesado — considere redistribuir' : pct > 120 ? ' ⚡ Um pouco pesado' : ' OK';
+    html += '<div style="margin-bottom:8px">';
+    html += '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">';
+    html += '<span style="font-weight:600;color:#1e3a5f">' + dObj.data + '</span>';
+    html += '<span style="color:' + barCor + ';font-weight:700">' + cargaTotal + 'min / ' + limTotal + 'min (' + pct + '%)' + alertMsg + '</span>';
+    html += '</div>';
+    html += '<div style="background:#e5e7eb;border-radius:5px;height:7px">';
+    html += '<div style="background:' + barCor + ';border-radius:5px;height:7px;width:' + Math.min(pct,100) + '%;transition:width 0.3s"></div>';
+    html += '</div></div>';
+  }
+
+  document.getElementById("modal-opcoes").innerHTML = html;
+  document.getElementById("modal-confirmar").style.display = "";
+}
+
+function alterarDestino(itemIdx, novoDiaId) {
+  planoRemanejo[itemIdx].destId = parseInt(novoDiaId);
+  renderModalPlano();
+}
+
+function abrirModal(diaId) {
+  var pendentes = getPendentesNoDia(diaId);
+  if (!pendentes.length) { alert("Nenhuma tarefa pendente neste dia."); return; }
+
+  modalDiaId = diaId;
+  planoRemanejo = calcularPlanoAutomatico(diaId);
+
+  if (!planoRemanejo.length) {
+    alert("Nao ha dias futuros disponiveis para remanejo.");
+    return;
+  }
+
+  var base = getDia(diaId);
+  document.getElementById("modal-title").textContent = "Remanejo — " + base.data;
+  document.getElementById("modal-sub").textContent = "O app distribuiu automaticamente as " + pendentes.length + " tarefa(s) por prioridade. Ajuste os dias destino se quiser, depois confirme.";
+  document.getElementById("modal-task-list").innerHTML = "";
+
+  renderModalPlano();
+  document.getElementById("modal").style.display = "flex";
+}
+
+function fecharModal() {
+  document.getElementById("modal").style.display = "none";
+  modalDiaId = null; planoRemanejo = [];
+}
+
+function fecharModalFora(e) {
+  if (e.target === document.getElementById("modal")) fecharModal();
+}
+
+function confirmarRemanejo() {
+  if (!modalDiaId || !planoRemanejo.length) { fecharModal(); return; }
+
+  var base = getDia(modalDiaId);
+
+  // Verificar se algum dia ficou acima de 160% — pedir confirmacao
+  var diasAfetados = {};
+  for (var i = 0; i < planoRemanejo.length; i++) diasAfetados[planoRemanejo[i].destId] = true;
+  var muitoPesado = false;
+  var dKeys = Object.keys(diasAfetados);
+  for (var j = 0; j < dKeys.length; j++) {
+    var did = parseInt(dKeys[j]);
+    var cargaT = getCargaComPlano(did, planoRemanejo);
+    var limT = getLimiteDia(did);
+    if (cargaT > limT * 1.6) { muitoPesado = true; break; }
+  }
+  if (muitoPesado) {
+    var ok = confirm("Um ou mais dias ficaram muito pesados (acima de 160% da carga). Confirma mesmo assim?");
+    if (!ok) return;
+  }
+
+  // Aplicar o plano
+  for (var k = 0; k < planoRemanejo.length; k++) {
+    var item = planoRemanejo[k];
+    remanejarPara([item.tar], item.destId, base.data);
   }
 
   fecharModal();
