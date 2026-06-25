@@ -960,24 +960,16 @@ function alterarDestinoBloco(blocoIdx, novoDiaId) {
 function abrirModal(diaId) {
   var pendentes = getPendentesNoDia(diaId);
   if (!pendentes.length) { alert("Nenhuma tarefa pendente neste dia."); return; }
-
   modalDiaId = diaId;
-
   var resultado = calcularPlanoEstruturalCompleto(diaId);
   window._planoResultado = resultado;
   planoRemanejo = resultado.plano;
   compressoesAplicadas = resultado.compressoes || {};
-
-  if (!planoRemanejo.length) {
-    alert("Nao ha dias futuros disponiveis para remanejo.");
-    return;
-  }
-
+  if (!planoRemanejo.length) { alert("Nao ha dias futuros disponiveis para remanejo."); return; }
   var base = getDia(diaId);
   document.getElementById("modal-title").textContent = "Remanejo Estrutural — " + base.data;
-  document.getElementById("modal-sub").textContent = "O app analisou " + pendentes.length + " tarefa(s) pendente(s) e organizou em blocos pedagogicos. Ajuste os dias destino se quiser e confirme.";
+  document.getElementById("modal-sub").textContent = "O app analisou " + pendentes.length + " tarefa(s) e organizou em blocos pedagogicos. Ajuste os dias destino se quiser e confirme.";
   document.getElementById("modal-task-list").innerHTML = "";
-
   renderModalPlano();
   document.getElementById("modal").style.display = "flex";
 }
@@ -995,7 +987,6 @@ function fecharModalFora(e) {
 function confirmarRemanejo() {
   if (!modalDiaId || !planoRemanejo.length) { fecharModal(); return; }
   var base = getDia(modalDiaId);
-
   // Verificar sobrecarga acima de 160%
   var diasAfetados = {};
   for (var i = 0; i < planoRemanejo.length; i++) diasAfetados[planoRemanejo[i].destId] = true;
@@ -1003,36 +994,24 @@ function confirmarRemanejo() {
   var dKeys = Object.keys(diasAfetados);
   for (var j = 0; j < dKeys.length; j++) {
     var did = parseInt(dKeys[j]);
-    var cargaT = getCargaComPlano(did, planoRemanejo);
-    var limT = getLimiteDia(did);
-    if (cargaT > limT * 1.6) { muitoPesado = true; break; }
+    var cT = getCargaComPlano(did, planoRemanejo);
+    var lT = getLimiteDia(did);
+    if (cT > lT * 1.6) { muitoPesado = true; break; }
   }
   if (muitoPesado) {
-    var ok = confirm("Um ou mais dias ficaram muito pesados (acima de 160% da carga). Confirma mesmo assim?");
+    var ok = confirm("Um ou mais dias ficaram muito pesados (acima de 160%). Confirma mesmo assim?");
     if (!ok) return;
   }
-
-  // Aplicar compressoes
+  // Aplicar compressoes via cargaExtra negativo
   var cKeys = Object.keys(compressoesAplicadas);
   for (var ck = 0; ck < cKeys.length; ck++) {
     var cDiaId = parseInt(cKeys[ck]);
     var comps = compressoesAplicadas[cDiaId];
-    if (!compressoesAplic) var compressoesAplic = {};
-    if (!compressoesAplic[cDiaId]) compressoesAplic[cDiaId] = [];
-    for (var ci = 0; ci < comps.length; ci++) {
-      compressoesAplic[cDiaId].push(comps[ci]);
-      // Registrar reducao de tempo na tarefa original via cargaExtra negativo
-      var ganhoTotal2 = 0;
-      for (var ci2 = 0; ci2 < compressoesAplic[cDiaId].length; ci2++) {
-        ganhoTotal2 += compressoesAplic[cDiaId][ci2].ganho;
-      }
-      // Usar cargaExtra como reducao (negativo)
-      if (!cargaExtra[cDiaId]) cargaExtra[cDiaId] = 0;
-      cargaExtra[cDiaId] = -ganhoTotal2;
-    }
+    var ganhoTotal = 0;
+    for (var ci = 0; ci < comps.length; ci++) ganhoTotal += comps[ci].ganho;
+    cargaExtra[cDiaId] = (cargaExtra[cDiaId] || 0) - ganhoTotal;
   }
-
-  // Aplicar remanejo por bloco
+  // Aplicar remanejo agrupado por bloco
   var blocos = [];
   var blocoAtualConf = [];
   for (var pi = 0; pi < planoRemanejo.length; pi++) {
@@ -1045,181 +1024,10 @@ function confirmarRemanejo() {
     }
   }
   if (blocoAtualConf.length) blocos.push(blocoAtualConf);
-
   for (var b = 0; b < blocos.length; b++) {
-    var bloco = blocos[b];
-    var tarefasBloco = bloco.map(function(x){ return x.tar; });
-    remanejarPara(tarefasBloco, bloco[0].destId, base.data);
+    var tarefasBloco = blocos[b].map(function(x){ return x.tar; });
+    remanejarPara(tarefasBloco, blocos[b][0].destId, base.data);
   }
-
-  fecharModal();
-  render();
-  updateStrip();
-}
-      destId = proxDia.id; // fallback
-      for (var k = 0; k < diasComFolga.length; k++) {
-        var d = diasComFolga[k];
-        var cargaBase = getCargaDia(d.id);
-        var cargaAdicSim = cargaSim[d.id] || 0;
-        var limD = getLimiteDia(d.id);
-        if (cargaBase + cargaAdicSim + t.min <= limD * 1.2) {
-          destId = d.id; break;
-        }
-      }
-    } else {
-      // baixa: FDS ou dia com mais folga
-      destId = fds ? fds.id : (diasComFolga.length ? diasComFolga[diasComFolga.length-1].id : proxDia.id);
-    }
-    cargaSim[destId] = (cargaSim[destId] || 0) + t.min;
-    plano.push({tar: t, destId: destId});
-  }
-  return plano;
-}
-
-function getCargaComPlano(diaId, plano) {
-  var base = getCargaDia(diaId);
-  for (var i = 0; i < plano.length; i++) {
-    if (plano[i].destId === diaId) base += plano[i].tar.min;
-  }
-  return base;
-}
-
-function renderModalPlano() {
-  if (!modalDiaId) return;
-  var base = getDia(modalDiaId);
-  var futuros = diasFuturos(modalDiaId);
-
-  // Montar HTML do plano editavel
-  var html = '';
-  // Resumo por dia destino
-  var resumo = {};
-  for (var i = 0; i < planoRemanejo.length; i++) {
-    var p = planoRemanejo[i];
-    if (!resumo[p.destId]) resumo[p.destId] = {min:0, count:0};
-    resumo[p.destId].min += p.tar.min;
-    resumo[p.destId].count++;
-  }
-
-  // Lista de tarefas com seletor de dia destino
-  html += '<div style="font-size:11px;color:#6b7280;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:1px">Plano de redistribuicao — ajuste se necessario</div>';
-
-  for (var j = 0; j < planoRemanejo.length; j++) {
-    var item = planoRemanejo[j];
-    var tc = TIPO[item.tar.tipo] || TIPO.revisao;
-    var probCor = item.tar.prob >= 80 ? '#b91c1c' : item.tar.prob >= 60 ? '#d97706' : '#0369a1';
-
-    html += '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;margin-bottom:8px">';
-    html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap">';
-    html += '<span class="task-badge ' + tc.cls + '">' + tc.label + '</span>';
-    html += '<span style="font-size:10px;font-weight:700;color:' + probCor + '">' + item.tar.prob + '% prob.</span>';
-    html += '<span style="font-size:11px;color:#6b7280">' + item.tar.min + 'min</span>';
-    html += '</div>';
-    html += '<div style="font-size:12px;color:#1f2937;margin-bottom:8px;line-height:1.4">' + item.tar.t + '</div>';
-    html += '<div style="display:flex;align-items:center;gap:8px">';
-    html += '<span style="font-size:11px;color:#6b7280;flex-shrink:0">Ir para:</span>';
-    html += '<select onchange="alterarDestino(' + j + ',this.value)" style="flex:1;font-size:12px;padding:5px 8px;border-radius:7px;border:1px solid #e2e8f0;background:#fff;color:#1e3a5f;font-weight:600">';
-    for (var k = 0; k < futuros.length && k < 14; k++) {
-      var fd = futuros[k];
-      var cargaFd = getCargaComPlano(fd.id, planoRemanejo);
-      var limFd = getLimiteDia(fd.id);
-      var pctCarga = Math.round((cargaFd / limFd) * 100);
-      var aviso = pctCarga > 150 ? ' ⚠️ muito pesado' : pctCarga > 120 ? ' ⚡ pesado' : '';
-      var sel = fd.id === item.destId ? ' selected' : '';
-      html += '<option value="' + fd.id + '"' + sel + '>' + fd.data + ' — ' + pctCarga + '% carga' + aviso + '</option>';
-    }
-    html += '</select>';
-    html += '</div></div>';
-  }
-
-  // Preview de carga por dia afetado
-  html += '<div style="margin-top:12px;font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Impacto nos dias destino</div>';
-  var diasAfetados = {};
-  for (var m = 0; m < planoRemanejo.length; m++) diasAfetados[planoRemanejo[m].destId] = true;
-  var dKeys = Object.keys(diasAfetados);
-  for (var n = 0; n < dKeys.length; n++) {
-    var did = parseInt(dKeys[n]);
-    var dObj = getDia(did);
-    var cargaTotal = getCargaComPlano(did, planoRemanejo);
-    var limTotal = getLimiteDia(did);
-    var pct = Math.round((cargaTotal / limTotal) * 100);
-    var barCor = pct > 150 ? '#b91c1c' : pct > 120 ? '#d97706' : '#059669';
-    var alertMsg = pct > 150 ? ' ⚠️ Muito pesado — considere redistribuir' : pct > 120 ? ' ⚡ Um pouco pesado' : ' OK';
-    html += '<div style="margin-bottom:8px">';
-    html += '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">';
-    html += '<span style="font-weight:600;color:#1e3a5f">' + dObj.data + '</span>';
-    html += '<span style="color:' + barCor + ';font-weight:700">' + cargaTotal + 'min / ' + limTotal + 'min (' + pct + '%)' + alertMsg + '</span>';
-    html += '</div>';
-    html += '<div style="background:#e5e7eb;border-radius:5px;height:7px">';
-    html += '<div style="background:' + barCor + ';border-radius:5px;height:7px;width:' + Math.min(pct,100) + '%;transition:width 0.3s"></div>';
-    html += '</div></div>';
-  }
-
-  document.getElementById("modal-opcoes").innerHTML = html;
-  document.getElementById("modal-confirmar").style.display = "";
-}
-
-function alterarDestino(itemIdx, novoDiaId) {
-  planoRemanejo[itemIdx].destId = parseInt(novoDiaId);
-  renderModalPlano();
-}
-
-function abrirModal(diaId) {
-  var pendentes = getPendentesNoDia(diaId);
-  if (!pendentes.length) { alert("Nenhuma tarefa pendente neste dia."); return; }
-
-  modalDiaId = diaId;
-  planoRemanejo = calcularPlanoAutomatico(diaId);
-
-  if (!planoRemanejo.length) {
-    alert("Nao ha dias futuros disponiveis para remanejo.");
-    return;
-  }
-
-  var base = getDia(diaId);
-  document.getElementById("modal-title").textContent = "Remanejo — " + base.data;
-  document.getElementById("modal-sub").textContent = "O app distribuiu automaticamente as " + pendentes.length + " tarefa(s) por prioridade. Ajuste os dias destino se quiser, depois confirme.";
-  document.getElementById("modal-task-list").innerHTML = "";
-
-  renderModalPlano();
-  document.getElementById("modal").style.display = "flex";
-}
-
-function fecharModal() {
-  document.getElementById("modal").style.display = "none";
-  modalDiaId = null; planoRemanejo = [];
-}
-
-function fecharModalFora(e) {
-  if (e.target === document.getElementById("modal")) fecharModal();
-}
-
-function confirmarRemanejo() {
-  if (!modalDiaId || !planoRemanejo.length) { fecharModal(); return; }
-
-  var base = getDia(modalDiaId);
-
-  // Verificar se algum dia ficou acima de 160% — pedir confirmacao
-  var diasAfetados = {};
-  for (var i = 0; i < planoRemanejo.length; i++) diasAfetados[planoRemanejo[i].destId] = true;
-  var muitoPesado = false;
-  var dKeys = Object.keys(diasAfetados);
-  for (var j = 0; j < dKeys.length; j++) {
-    var did = parseInt(dKeys[j]);
-    var cargaT = getCargaComPlano(did, planoRemanejo);
-    var limT = getLimiteDia(did);
-    if (cargaT > limT * 1.6) { muitoPesado = true; break; }
-  }
-  if (muitoPesado) {
-    var ok = confirm("Um ou mais dias ficaram muito pesados (acima de 160% da carga). Confirma mesmo assim?");
-    if (!ok) return;
-  }
-
-  // Aplicar o plano
-  for (var k = 0; k < planoRemanejo.length; k++) {
-    var item = planoRemanejo[k];
-    remanejarPara([item.tar], item.destId, base.data);
-  }
-
   fecharModal();
   render();
   updateStrip();
