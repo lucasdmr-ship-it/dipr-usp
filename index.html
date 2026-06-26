@@ -130,7 +130,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="header">
   <div class="header-eyebrow">Mestrado · DIPr · USP</div>
   <div class="header-title">Roteiro de Estudos</div>
-  <div class="header-sub">23 jun — 02 ago 2026</div>
+  <div class="header-sub">29 jun — 02 ago 2026</div>
   <div class="progress-wrap">
     <div class="progress-meta">
       <span id="hdr-feitos">carregando...</span>
@@ -215,216 +215,220 @@ var TIPO = {
 // Carga base em minutos por tipo de dia
 var CARGA_BASE = { util: 180, fds: 360 };
 
-var ROTEIRO_BASE = [
-  {id:1,data:"23/06 (Ter)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["A","G"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 1 (1h14) — Conceito, objeto e metodo do DIPr"},
-    {o:2,min:60,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio 16a ed. — Cap. I e II (conceito, objeto, tradicoes)"},
-    {o:3,min:60,tipo:"fichamento",sim:false,prob:70,t:"Fichar: as 3 tradicoes (germanica, ang.-sax., francesa) e o que cada uma inclui como objeto"}
-  ]},
-  {id:2,data:"24/06 (Qua)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["A"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 2 (1h28) — Fontes do DIPr (assistir 1h e parar)"},
-    {o:2,min:60,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio — Cap. VII (normas diretas vs. indiretas)"},
-    {o:3,min:60,tipo:"fichamento",sim:false,prob:70,t:"Fichar: norma indireta, elemento de conexao (Monaco 2019 p.59 nota 92), Francescakis"}
-  ]},
-  {id:3,data:"24/06 (Qua)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["A","G"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 3 (1h30) — Fundamentos do DIPr (assistir 1h)"},
-    {o:2,min:75,tipo:"leitura",sim:false,prob:85,t:"Monaco 2013 — Cap. introdutorio e p. 69 (normas de aplicacao imediata)"},
-    {o:3,min:45,tipo:"pratica",sim:false,prob:80,t:"Prova 2022: ler enunciado + espelho e identificar como a banca usou Monaco 2013"}
-  ]},
-  {id:4,data:"25/06 (Qui)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["A","H"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 4 (1h30) — Qualificacao e normas de conexao (assistir 1h)"},
-    {o:2,min:90,tipo:"leitura",sim:false,prob:85,t:"Monaco 2019 (1a Parte): estrutura geral, norma de conflito, elemento de conexao"},
-    {o:3,min:30,tipo:"fichamento",sim:false,prob:70,t:"Fichar: diferenca entre conexao (normativo) e fato nacional/estrangeiro"}
-  ]},
-  {id:5,data:"26/06 (Sex)",sem:1,tipo:"util",fase:"Fase 1 — Fundamentos",temas:["H"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:90,t:"Monaco M1 Aula 5 (1h34) — Reenvio — PRIORIDADE MAXIMA"},
-    {o:2,min:90,tipo:"leitura",sim:false,prob:85,t:"Monaco 2019 — clausula de excecao (pp. 31-32 e entorno)"},
-    {o:3,min:30,tipo:"fichamento",sim:false,prob:70,t:"Fichar: clausula de excecao — atribuicao geral vs. restrita"}
-  ]},
-  {id:6,data:"27/06 (Sab)",sem:1,tipo:"fds",fase:"Fase 1 — Fundamentos",temas:["B"],tarefas:[
-    {o:1,min:90,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio — Cap. Reenvio (conceito, especies, posicao brasileira)"},
-    {o:2,min:90,tipo:"leitura",sim:false,prob:85,t:"Monaco 2019 — reenvio e as duas dualidades do art. 16 LINDB"},
-    {o:3,min:60,tipo:"pratica",sim:false,prob:85,t:"Prova 2024: rascunhar resposta sobre os 4 modelos de reenvio"},
-    {o:4,min:60,tipo:"pratica",sim:false,prob:80,t:"Comparar com espelho 2024: identificar o que faltou nos criterios"},
-    {o:5,min:60,tipo:"revisao",sim:false,prob:60,t:"Revisar fichas da semana 1 e montar mapa mental"}
-  ]},
-  {id:7,data:"28/06 (Dom)",sem:1,tipo:"fds",fase:"Fase 1 — Fundamentos",temas:["B","C"],tarefas:[
-    {o:1,min:90,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 5 (revisao) + Aula 6 (questao previa, 1h24)"},
-    {o:2,min:90,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio — principio da proximidade / lei mais proxima"},
-    {o:3,min:60,tipo:"pratica",sim:false,prob:80,t:"Prova 2023 Q1: rascunhar resposta (institutos + valores axiologicos)"},
-    {o:4,min:60,tipo:"pratica",sim:false,prob:80,t:"Comparar com espelho 2023: checar pontuacao em Dolinger, Monaco e Patrao"},
-    {o:5,min:60,tipo:"revisao",sim:false,prob:55,t:"Relatorio pessoal Semana 1: dominei / precisei revisar / ajustes"}
-  ]},
-  {id:8,data:"29/06 (Seg)",sem:2,tipo:"util",fase:"Fase 2 — Alta Probabilidade",temas:["B","C"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M1 Aula 7 (1h18) — Ordem publica e fraude a lei"},
-    {o:2,min:60,tipo:"leitura",sim:false,prob:85,t:"Monaco 2019 — releitura reenvio: posicao brasileira (art. 16 LINDB), critica"},
-    {o:3,min:60,tipo:"pratica",sim:false,prob:80,t:"Simulado rapido: escrever em 40 min sobre reenvio sem consulta; depois corrigir"}
-  ]},
-  {id:9,data:"30/06 (Ter)",sem:2,tipo:"util",fase:"Fase 2 — Alta Probabilidade",temas:["C","D"],tarefas:[
-    {o:1,min:90,tipo:"leitura",sim:false,prob:85,t:"Coletanea Monaco/Loula — Cap. 15 (Patrao: escolha tacita da lei aplicavel ao regime matrimonial)"},
-    {o:2,min:60,tipo:"fichamento",sim:false,prob:75,t:"Fichar: autonomia conflitual vs. autonomia privada; designacao expressa vs. tacita"},
-    {o:3,min:30,tipo:"pratica",sim:false,prob:75,t:"Reler espelho 2023 Q2: criterios de pontuacao sobre autonomia"}
-  ]},
-  {id:10,data:"01/07 (Qua)",sem:2,tipo:"util",fase:"Fase 2 — Alta Probabilidade",temas:["D","C"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:85,t:"Monaco M2 T4 (38min) + T5 (1h04) — Lei aplicavel as obrigacoes"},
-    {o:2,min:60,tipo:"leitura",sim:false,prob:80,t:"Dolinger/Tiburcio — Cap. II (lei mais proxima) + autonomia conflitual"},
-    {o:3,min:60,tipo:"pratica",sim:false,prob:80,t:"Prova 2023 Q2: escrever resposta completa sobre autonomia conflitual"}
-  ]},
-  {id:11,data:"02/07 (Qui)",sem:2,tipo:"util",fase:"Fase 2 — Alta Probabilidade",temas:["E"],tarefas:[
-    {o:1,min:60,tipo:"leitura",sim:false,prob:75,t:"Monaco 2013 — p. 69 (normas de aplicacao imediata) + contexto do capitulo"},
-    {o:2,min:60,tipo:"leitura",sim:false,prob:75,t:"Dolinger/Tiburcio — Cap. VII item normas diretas (normas substanciais)"},
-    {o:3,min:60,tipo:"pratica",sim:false,prob:75,t:"Prova 2022 Q(c): escrever resposta sobre DIPr substancial com Francescakis"}
-  ]},
-  {id:12,data:"03/07 (Sex)",sem:2,tipo:"util",fase:"Fase 2 — Alta Probabilidade",temas:["F"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:70,t:"Monaco M5 Aula 1 (1h24) — Introducao ao DIPu blico (assistir 60min)"},
-    {o:2,min:60,tipo:"leitura",sim:false,prob:70,t:"Dolinger/Tiburcio — Cap. introdutorio (relacao DIPu blico x DIPr)"},
-    {o:3,min:60,tipo:"pratica",sim:false,prob:70,t:"Prova 2025: mapear os 4 eixos de distincao que valem pontos no espelho"}
-  ]},
-  {id:13,data:"04/07 (Sab)",sem:2,tipo:"fds",fase:"Fase 2 — Alta Probabilidade",temas:["F","G"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:70,t:"Monaco M5 Aula 2 (2h07) — Fontes DIPu blico (assistir 60min)"},
-    {o:2,min:90,tipo:"leitura",sim:false,prob:65,t:"Accioly/Casella 27a ed. — caps. introdutorios (conceito e fontes do DIPu blico)"},
-    {o:3,min:60,tipo:"pratica",sim:false,prob:70,t:"Simulado 2025 Q(a): pontos de contato DIPu blico/DIPr sem consulta"},
-    {o:4,min:60,tipo:"pratica",sim:false,prob:70,t:"Simulado 2025 Q(b): distincao pelos 4 eixos do espelho"},
-    {o:5,min:90,tipo:"revisao",sim:false,prob:55,t:"Revisao geral semana 2: reler todos os fichamentos"}
-  ]},
-  {id:14,data:"05/07 (Dom)",sem:2,tipo:"fds",fase:"Fase 2 — Alta Probabilidade",temas:["A","B","C","D"],tarefas:[
-    {o:1,min:120,tipo:"leitura",sim:false,prob:85,t:"Coletanea Monaco/Loula — Cap. 1 (panorama) e Cap. 9 (autonomia conflitual na UE)"},
-    {o:2,min:120,tipo:"simulado",sim:true,prob:99,t:"SIMULADO 1 (2h): normas de conflito + reenvio + clausula de excecao"},
-    {o:3,min:60,tipo:"pratica",sim:false,prob:85,t:"Autocorrecao contra espelhos 2022-2024: identificar pontos perdidos"},
-    {o:4,min:60,tipo:"revisao",sim:false,prob:60,t:"Relatorio Semana 2: temas dominados, lacunas, ajuste de ritmo"}
-  ]},
-  {id:15,data:"06/07 (Seg)",sem:3,tipo:"util",fase:"Fase 3 — Coletanea",temas:["D","C"],tarefas:[
-    {o:1,min:90,tipo:"leitura",sim:false,prob:80,t:"Coletanea Monaco/Loula — Cap. 10 (regimes matrimoniais e autonomia conflitual na UE)"},
-    {o:2,min:60,tipo:"fichamento",sim:false,prob:70,t:"Fichar: conexao cap.10 com autonomia conflitual (Patrao/cap.15)"},
-    {o:3,min:30,tipo:"pratica",sim:false,prob:70,t:"Escrever paragrafo de 150 palavras sobre autonomia conflitual citando cap. 15 e Dolinger"}
-  ]},
-  {id:16,data:"07/07 (Ter)",sem:3,tipo:"util",fase:"Fase 3 — Coletanea",temas:["E","H"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:70,t:"Monaco M1 Aula 7 (revisao) — Ordem publica e normas de aplicacao imediata"},
-    {o:2,min:90,tipo:"leitura",sim:false,prob:70,t:"Coletanea Monaco/Loula — Cap. 14 (questao previa) e Cap. 17 (ordem publica)"},
-    {o:3,min:30,tipo:"fichamento",sim:false,prob:60,t:"Fichar: ordem publica como limite ao direito estrangeiro + clausula de excecao"}
-  ]},
-  {id:17,data:"08/07 (Qua)",sem:3,tipo:"util",fase:"Fase 3 — Coletanea",temas:["H"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:70,t:"Monaco M1 Aula 6 (1h24) — Questao previa e adaptacao"},
-    {o:2,min:90,tipo:"leitura",sim:false,prob:60,t:"Monaco 2019 — Parte 1 completa: releitura critica com foco em lacunas intersistemicas"},
-    {o:3,min:30,tipo:"fichamento",sim:false,prob:55,t:"Fichar: lacunas intersistemicas — o que sao, como se resolvem"}
-  ]},
-  {id:18,data:"09/07 (Qui)",sem:3,tipo:"util",fase:"Fase 3 — Coletanea",temas:["I"],tarefas:[
-    {o:1,min:90,tipo:"leitura",sim:false,prob:50,t:"Monaco 2013 — controle de constitucionalidade da lei estrangeira"},
-    {o:2,min:60,tipo:"leitura",sim:false,prob:50,t:"Coletanea Monaco/Loula — Cap. 21 e Cap. 22 (constitucionalizacao do DIPr)"},
-    {o:3,min:30,tipo:"fichamento",sim:false,prob:45,t:"Fichar: fundamento do controle constitucional + vinculo com normas de aplicacao imediata"}
-  ]},
-  {id:19,data:"10/07 (Sex)",sem:3,tipo:"util",fase:"Fase 3 — Coletanea",temas:["J"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:55,t:"Monaco M3 T5 (1h00) — Aspectos pessoais do matrimonio e divorcio"},
-    {o:2,min:60,tipo:"aula",sim:false,prob:50,t:"Monaco M3 T10 (25min) + M2 T9 (41min) — Sucessoes pessoais e patrimoniais"},
-    {o:3,min:60,tipo:"leitura",sim:false,prob:45,t:"Coletanea Monaco/Loula — Cap. 24 (regime matrimonial) e Cap. 25 (sucessoes)"}
-  ]},
-  {id:20,data:"11/07 (Sab)",sem:3,tipo:"fds",fase:"Fase 3 — Coletanea",temas:["K"],tarefas:[
-    {o:1,min:90,tipo:"aula",sim:false,prob:50,t:"Monaco M4 T1 (38min) + T4 (1h03) + T5 (1h04) — Territorialidade e competencia internacional"},
-    {o:2,min:60,tipo:"leitura",sim:false,prob:40,t:"Dolinger/Tiburcio — Cap. sobre jurisdicao e processo internacional"},
-    {o:3,min:60,tipo:"leitura",sim:false,prob:40,t:"Coletanea Monaco/Loula — Cap. 29 (cooperacao juridica internacional)"},
-    {o:4,min:90,tipo:"pratica",sim:false,prob:45,t:"Simular questao sobre jurisdicao internacional (45min) + autocorrigir"},
-    {o:5,min:60,tipo:"revisao",sim:false,prob:40,t:"Consolidar fichamentos semana 3"}
-  ]},
-  {id:21,data:"12/07 (Dom)",sem:3,tipo:"fds",fase:"Fase 3 — Coletanea",temas:["A","B","C","D","E"],tarefas:[
-    {o:1,min:120,tipo:"leitura",sim:false,prob:80,t:"Coletanea Monaco/Loula — releitura caps. 1, 9, 10"},
-    {o:2,min:120,tipo:"simulado",sim:true,prob:99,t:"SIMULADO 2 (2h): DIPr substancial + autonomia conflitual (modelo prova 2022+2023)"},
-    {o:3,min:60,tipo:"pratica",sim:false,prob:80,t:"Autocorrecao e analise de pontos de melhoria"},
-    {o:4,min:60,tipo:"revisao",sim:false,prob:55,t:"Relatorio Semana 3: medir dominio por tema, ajustar foco na semana 4"}
-  ]},
-  {id:22,data:"13/07 (Seg)",sem:4,tipo:"util",fase:"Fase 4 — Consolidacao",temas:["B","H"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:85,t:"Revisao ativa Reenvio: cobrir fichas e testar os 4 modelos + art. 16 LINDB de memoria"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:85,t:"Resposta completa sobre reenvio (1h), autocorrigir vs. espelho 2024"}
-  ]},
-  {id:23,data:"14/07 (Ter)",sem:4,tipo:"util",fase:"Fase 4 — Consolidacao",temas:["C","D"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:85,t:"Revisao ativa: clausula de excecao + autonomia conflitual — testar de memoria"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:80,t:"Reescrever Q2 da prova 2023 com melhoria apos correcao anterior"}
-  ]},
-  {id:24,data:"15/07 (Qua)",sem:4,tipo:"util",fase:"Fase 4 — Consolidacao",temas:["E","F"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:75,t:"Revisao: DIPr substancial (Francescakis) + DIPu blico x DIPr"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:75,t:"Simular questao sobre DIPr substancial + DIPu blico x DIPr num unico enunciado"}
-  ]},
-  {id:25,data:"16/07 (Qui)",sem:4,tipo:"util",fase:"Fase 4 — Consolidacao",temas:["A","G"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:90,t:"Revisao: normas de conflito, objeto da disciplina, elemento de conexao (Monaco 2019 nota 92)"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:90,t:"Resposta simulando Q(a) e Q(b) da prova 2022 sobre normas indiretas vs. diretas"}
-  ]},
-  {id:26,data:"17/07 (Sex)",sem:4,tipo:"util",fase:"Fase 4 — Consolidacao",temas:["H","I"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:65,t:"Revisao: lacunas intersistemicas (Monaco 2019) + controle constitucional (Monaco 2013)"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:60,t:"Criar pergunta ficticia sobre controle constitucional da lei estrangeira + escrever + corrigir"}
-  ]},
-  {id:27,data:"18/07 (Sab)",sem:4,tipo:"fds",fase:"Fase 4 — Consolidacao",temas:["A","B","C","D","E","F"],tarefas:[
-    {o:1,min:150,tipo:"simulado",sim:true,prob:99,t:"SIMULADO GERAL 1 (2h30): prova completa em condicoes reais — 1 questao de 10 pontos"},
-    {o:2,min:60,tipo:"pratica",sim:false,prob:90,t:"Autocorrecao rigorosa contra todos os espelhos disponiveis"},
-    {o:3,min:90,tipo:"revisao",sim:false,prob:80,t:"Identificar 3 pontos mais fracos e anotar para a semana 5"},
-    {o:4,min:60,tipo:"revisao",sim:false,prob:70,t:"Reler caps. 1 e 9 da Coletanea Monaco/Loula"}
-  ]},
-  {id:28,data:"19/07 (Dom)",sem:4,tipo:"fds",fase:"Fase 4 — Consolidacao",temas:["J","K"],tarefas:[
-    {o:1,min:60,tipo:"aula",sim:false,prob:45,t:"Monaco M4 T9 (1h23) — Homologacao de decisoes estrangeiras"},
-    {o:2,min:90,tipo:"revisao",sim:false,prob:50,t:"Revisao familia/sucessoes + jurisdicao: reler fichas, testar conceitos-chave"},
-    {o:3,min:60,tipo:"pratica",sim:false,prob:45,t:"Escrever 500 palavras sobre homologacao e cooperacao juridica sem consulta"},
-    {o:4,min:90,tipo:"revisao",sim:false,prob:55,t:"Relatorio Semana 4: nota simulado geral, lacunas criticas, plano para semana 5"},
-    {o:5,min:60,tipo:"revisao",sim:false,prob:50,t:"Conferir acesso a todos os titulos da bibliografia obrigatoria"}
-  ]},
-  {id:29,data:"20/07 (Seg)",sem:5,tipo:"util",fase:"Fase 5 — Sprint Final",temas:["B","C"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:85,t:"Revisao intensiva: reenvio + clausula de excecao — sintese comparativa em 1 pagina"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:85,t:"Treino: 1 resposta em 40 min sobre 1 desses temas sem consulta"}
-  ]},
-  {id:30,data:"21/07 (Ter)",sem:5,tipo:"util",fase:"Fase 5 — Sprint Final",temas:["A","D"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:90,t:"Revisao intensiva: normas de conflito + autonomia conflitual — vocabulario tecnico exato"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:90,t:"Treino: resposta integrando normas de conflito e autonomia conflitual"}
-  ]},
-  {id:31,data:"22/07 (Qua)",sem:5,tipo:"util",fase:"Fase 5 — Sprint Final",temas:["E","F"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:75,t:"Revisao: DIPr substancial + DIPu blico x DIPr — reler fichas + espelhos 2022 e 2025"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:75,t:"Simular questao cruzando DIPr substancial com DIPu blico x DIPr (provavel 2026)"}
-  ]},
-  {id:32,data:"23/07 (Qui)",sem:5,tipo:"util",fase:"Fase 5 — Sprint Final",temas:["H","I"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:65,t:"Revisao lacunas + constitucionalidade — reforcar argumentos mais sofisticados"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:65,t:"Treino de redacao discursiva: linguagem tecnica, estrutura de argumento pos-grad."}
-  ]},
-  {id:33,data:"24/07 (Sex)",sem:5,tipo:"util",fase:"Fase 5 — Sprint Final",temas:["A","B","C","D"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:90,t:"Flash review de todas as fichas: cobrir e recuperar de memoria"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:90,t:"Escrever esquema-resposta (topicos) para cada um dos 4 temas de nivel 1"}
-  ]},
-  {id:34,data:"25/07 (Sab)",sem:5,tipo:"fds",fase:"Fase 5 — Sprint Final",temas:["A","B","C","D","E","F","G","H"],tarefas:[
-    {o:1,min:150,tipo:"simulado",sim:true,prob:99,t:"SIMULADO GERAL 2 (2h30): prova completa em condicoes reais"},
-    {o:2,min:60,tipo:"pratica",sim:false,prob:90,t:"Autocorrecao + comparacao com espelhos"},
-    {o:3,min:60,tipo:"revisao",sim:false,prob:80,t:"Medir evolucao vs. Simulado Geral 1"},
-    {o:4,min:90,tipo:"revisao",sim:false,prob:75,t:"Releitura seletiva da bibliografia: trechos dos espelhos que voce errou"}
-  ]},
-  {id:35,data:"26/07 (Dom)",sem:5,tipo:"fds",fase:"Fase 5 — Sprint Final",temas:["A","B","C","D","E","F"],tarefas:[
-    {o:1,min:120,tipo:"revisao",sim:false,prob:85,t:"Reler todos os espelhos de correcao 2022-2025: criterios de pontuacao"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:85,t:"Treino final: 1 questao nova (tema que voce se sente mais fraco)"},
-    {o:3,min:60,tipo:"revisao",sim:false,prob:70,t:"Relatorio Semana 5: auto-avaliacao final, confianca por tema (0-10)"},
-    {o:4,min:90,tipo:"revisao",sim:false,prob:65,t:"Organizar fichas finais por ordem de probabilidade"}
-  ]},
-  {id:36,data:"27/07 (Seg)",sem:6,tipo:"util",fase:"Fase 6 — Reta Final",temas:["B","C"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:85,t:"Revisao leve reenvio + clausula de excecao: leitura das fichas"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:85,t:"Plano de resposta (esquema) para cada variacao possivel de questao nesses temas"}
-  ]},
-  {id:37,data:"28/07 (Ter)",sem:6,tipo:"util",fase:"Fase 6 — Reta Final",temas:["A","D","E"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:90,t:"Revisao leve: normas de conflito + autonomia + DIPr substancial"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:85,t:"Ler em voz alta os principais argumentos doutrinarios (fixacao ativa)"}
-  ]},
-  {id:38,data:"29/07 (Qua)",sem:6,tipo:"util",fase:"Fase 6 — Reta Final",temas:["F","G","H"],tarefas:[
-    {o:1,min:90,tipo:"revisao",sim:false,prob:70,t:"Revisao leve: DIPu blico x DIPr + objetos da disciplina + lacunas intersistemicas"},
-    {o:2,min:90,tipo:"pratica",sim:false,prob:70,t:"Simular 45min: tema que voce se sente mais fraco — escrever sem consulta"}
-  ]},
-  {id:39,data:"30/07 (Qui)",sem:6,tipo:"util",fase:"Fase 6 — Reta Final",temas:["A","B","C","D"],tarefas:[
-    {o:1,min:60,tipo:"revisao",sim:false,prob:90,t:"Flash cards finais: 5 min por tema, conceitos-chave de todos"},
-    {o:2,min:60,tipo:"revisao",sim:false,prob:85,t:"Reler espelhos 2023 e 2024 — ultima vez nos criterios de pontuacao"},
-    {o:3,min:60,tipo:"revisao",sim:false,prob:75,t:"Descanso ativo: revisar itens mais solidos, confirmar confianca"}
-  ]},
-  {id:40,data:"31/07 (Sex)",sem:6,tipo:"util",fase:"Fase 6 — Reta Final",temas:["A","B"],tarefas:[
-    {o:1,min:60,tipo:"revisao",sim:false,prob:90,t:"Leitura leve das fichas mais importantes (reenvio + normas de conflito)"},
-    {o:2,min:60,tipo:"revisao",sim:false,prob:80,t:"Logistica: local de prova, material, horario — portoes fecham na hora"}
-  ]},
-  {id:41,data:"01/08 (Sab)",sem:6,tipo:"fds",fase:"Fase 6 — Reta Final",temas:[],tarefas:[
-    {o:1,min:60,tipo:"revisao",sim:false,prob:70,t:"Leitura tranquila dos fichamentos (sem pressao)"},
-    {o:2,min:60,tipo:"revisao",sim:false,prob:60,t:"Descanso: dormir cedo, hidratacao — prova as 13h do dia 02/08"}
-  ]}
-];
 
+var ROTEIRO_BASE = [
+// ═══════════════════════════════════════════════════════════════════
+// SEMANA 1 (29/06–05/07) — Fundamentos: Conceito, Objeto, Reenvio
+// Úteis: 3h | FDS: 6h
+// ═══════════════════════════════════════════════════════════════════
+{id:1,data:"29/06 (Seg)",sem:1,tipo:"util",fase:"Semana 1 — Fundamentos",temas:["A","G"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:85,t:'YouTube: Canal Monaco — "Aula 1 – Direito Internacional Privado" (1h13) — Conceito, objeto e método do DIPr'},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio 16a ed. — Cap. I: conceito, natureza juridica e relacao com outros ramos"},
+  {o:3,min:60,tipo:"fichamento",sim:false,prob:75,t:"Fichar: definicao do DIPr nas 3 tradicoes (germanica: conflitos de leis; francesa: 4 objetos; ang.-sax.: choice of law) — diferenca crucial para a prova"}
+]},
+{id:2,data:"30/06 (Ter)",sem:1,tipo:"util",fase:"Semana 1 — Fundamentos",temas:["A","G"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:85,t:'YouTube: Canal Monaco — "Aula 2 – Direito Internacional Privado" (1h28) — Fontes do DIPr e estrutura do sistema brasileiro'},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio — Cap. II: fontes do DIPr (tratados, lei interna, doutrina, jurisprudencia, costume)"},
+  {o:3,min:60,tipo:"fichamento",sim:false,prob:75,t:"Fichar: hierarquia das fontes no sistema brasileiro — LINDB como lei geral, tratados como lei especial"}
+]},
+{id:3,data:"01/07 (Qua)",sem:1,tipo:"util",fase:"Semana 1 — Fundamentos",temas:["A"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:85,t:'YouTube: Canal Monaco — "Aula 3 – Direito Internacional Privado" (1h30) — Continuacao da estrutura e fundamentos'},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio — Cap. VII: normas diretas vs. normas indiretas (conceito e distincao fundamental)"},
+  {o:3,min:60,tipo:"fichamento",sim:false,prob:80,t:"Fichar: norma indireta = norma de conflito (aponta a lei aplicavel); norma direta = norma substancial (resolve diretamente o conflito)"}
+]},
+{id:4,data:"02/07 (Qui)",sem:1,tipo:"util",fase:"Semana 1 — Fundamentos",temas:["A"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:85,t:'YouTube: Canal Monaco — "Aula 4 – Direito Internacional Privado" (1h29) — Qualificacao e normas de conexao'},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:85,t:"Monaco 2019 (1a Parte) — inicio: estrutura da norma de conflito, elemento de conexao (p. 59, nota 92 — definicao precisa para a prova)"},
+  {o:3,min:60,tipo:"fichamento",sim:false,prob:80,t:"Fichar: elemento de conexao como 'continentes sem conteudo dados a priori' (Monaco 2019, p.59, nota 92) — citacao que caiu na prova 2022"}
+]},
+{id:5,data:"03/07 (Sex)",sem:1,tipo:"util",fase:"Semana 1 — Fundamentos",temas:["B"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:90,t:'YouTube: Canal Monaco — "Aula 5 – Direito Internacional Privado" (1h33) — Reenvio e problemas de conexao *** PRIORIDADE MAXIMA — tema central da prova 2024 ***'},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:90,t:"Dolinger/Tiburcio — Cap. Reenvio: conceito, espécies (simples/duplo), historico e posicao brasileira (art. 16 LINDB)"},
+  {o:3,min:60,tipo:"fichamento",sim:false,prob:90,t:"Fichar: os 4 modelos de reenvio (remissao material, remissao conflitual, reenvio simples, reenvio duplo) + art. 16 LINDB e suas duas dualidades interpretativas (Monaco 2019)"}
+]},
+{id:6,data:"04/07 (Sab)",sem:1,tipo:"fds",fase:"Semana 1 — Fundamentos",temas:["B","C","H"],tarefas:[
+  {o:1,min:60,tipo:"leitura",sim:false,prob:90,t:"Monaco 2019 (1a Parte) — trecho sobre reenvio: as duas dualidades do art. 16 LINDB (reler com foco nas figuras da prova 2024)"},
+  {o:2,min:60,tipo:"pratica",sim:false,prob:90,t:"Prova 2024 (enunciado): analisar as 4 figuras do reenvio e rascunhar resposta — qual e admissivel a luz do art. 16 LINDB?"},
+  {o:3,min:60,tipo:"pratica",sim:false,prob:90,t:"Comparar rascunho com espelho 2024: mapear criterios de pontuacao por subitem (a, b, c) — anotar o que faltou"},
+  {o:4,min:60,tipo:"aula",sim:false,prob:85,t:'YouTube: Canal Monaco — "Aula 6 – Direito Internacional Privado" (1h23) — Questao previa e adaptacao'},
+  {o:5,min:60,tipo:"leitura",sim:false,prob:85,t:"Monaco 2019 (1a Parte) — clausula de excecao: conceito, atribuicao geral vs. restrita, posicao brasileira (pp. 31-32 e entorno)"},
+  {o:6,min:60,tipo:"fichamento",sim:false,prob:85,t:"Fichar: clausula de excecao (atribuicao geral vs. restrita) — distincao de principio da proximidade"}
+]},
+{id:7,data:"05/07 (Dom)",sem:1,tipo:"fds",fase:"Semana 1 — Fundamentos",temas:["C","A"],tarefas:[
+  {o:1,min:60,tipo:"leitura",sim:false,prob:85,t:"Dolinger/Tiburcio — Cap. sobre principio da proximidade e lei mais proxima (conceito, origem, aplicacao no Brasil)"},
+  {o:2,min:60,tipo:"fichamento",sim:false,prob:85,t:"Fichar: principio da proximidade — relacao com clausula de excecao e com art. 9o LINDB"},
+  {o:3,min:60,tipo:"aula",sim:false,prob:80,t:'YouTube: Canal Monaco — "Aula 7 – Direito Internacional Privado" (1h18) — Ordem publica e fraude a lei'},
+  {o:4,min:60,tipo:"aula",sim:false,prob:70,t:'YouTube: Canal Monaco — "Aula 8 – Direito Internacional Privado" (1h12) — Direito adquirido e conflito de leis no tempo'},
+  {o:5,min:60,tipo:"leitura",sim:false,prob:80,t:"Dolinger/Tiburcio — Cap. sobre ordem publica: conceito, funcao limitadora, ordem publica interna vs. internacional"},
+  {o:6,min:60,tipo:"pratica",sim:false,prob:85,t:"Prova 2023 Q1: rascunhar resposta sobre institutos (proximidade, clausula de excecao) + valores axiologicos — comparar com espelho 2023"}
+]},
+{id:8,data:"06/07 (Seg)",sem:1,tipo:"util",fase:"Semana 1 — Fundamentos",temas:["A"],tarefas:[
+  {o:1,min:60,tipo:"pratica",sim:false,prob:75,t:"Escrever sem consulta sobre reenvio (30 min) + sobre ordem publica (20 min) — checar o que ficou solido e o que ainda e fragil"},
+  {o:2,min:60,tipo:"revisao",sim:false,prob:65,t:"Relatorio Semana 1: o que domino, o que precisa reforco, ajuste de ritmo para semana 2"},
+  {o:3,min:60,tipo:"fichamento",sim:false,prob:80,t:"Fichar: ordem publica como excecao a aplicacao do direito estrangeiro + fraude a lei no DIPr + direito adquirido — com base nas aulas 7 e 8 do dia anterior"}
+]},
+// ═══════════════════════════════════════════════════════════════════
+// SEMANA 2 (07/07–13/07) — Aprofundamento: Autonomia, DIPr Substancial, DIPúblico
+// ═══════════════════════════════════════════════════════════════════
+{id:9,data:"07/07 (Ter)",sem:2,tipo:"util",fase:"Semana 2 — Aprofundamento",temas:["D"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:80,t:'YouTube: Canal Monaco — "Aula 9 – Direito Internacional Privado" (1h33) — Lei aplicavel as pessoas e ao estatuto pessoal'},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:80,t:"Coletanea Monaco/Loula — Cap. 15 (Patrao): admissibilidade da escolha tacita da lei aplicavel ao regime matrimonial"},
+  {o:3,min:60,tipo:"fichamento",sim:false,prob:80,t:"Fichar: autonomia conflitual (escolha da lei pelas partes) vs. autonomia privada (liberdade contratual) — distincao fundamental que caiu na prova 2023"}
+]},
+{id:10,data:"08/07 (Qua)",sem:2,tipo:"util",fase:"Semana 2 — Aprofundamento",temas:["D","C"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:80,t:'YouTube: Canal Monaco — Modulo 2 Aspectos Patrimoniais — "Tema 4 – DIPr: aspectos patrimoniais" (38min) — Lei aplicavel a substancia das obrigacoes'},
+  {o:2,min:60,tipo:"aula",sim:false,prob:80,t:'YouTube: Canal Monaco — "Tema 5 – DIPr: aspectos patrimoniais" (1h04) — Lei aplicavel as obrigacoes: analise principiologica'},
+  {o:3,min:60,tipo:"fichamento",sim:false,prob:80,t:"Fichar: lei aplicavel as obrigacoes (lex loci executionis vs. lex voluntatis) + papel da autonomia conflitual nos contratos internacionais — com base nos Temas 4 e 5 de hoje"}
+]},
+{id:11,data:"09/07 (Qui)",sem:2,tipo:"util",fase:"Semana 2 — Aprofundamento",temas:["D"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:75,t:'YouTube: Canal Monaco — "Tema 6 – DIPr: aspectos patrimoniais" (1h03) — Contratos internacionais, entre harmonizacao e atipicidade'},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:80,t:"Coletanea Monaco/Loula — Cap. 9: autonomia conflitual na UE — Regulamentos Roma I e Roma II (aplicacao pratica)"},
+  {o:3,min:60,tipo:"fichamento",sim:false,prob:80,t:"Fichar: autonomia conflitual nos contratos internacionais — designacao expressa vs. tacita, limites (ordem publica, normas de aplicacao imediata), Roma I e Roma II (Cap. 9)"}
+]},
+{id:12,data:"10/07 (Sex)",sem:2,tipo:"util",fase:"Semana 2 — Aprofundamento",temas:["E"],tarefas:[
+  {o:1,min:60,tipo:"leitura",sim:false,prob:75,t:"Monaco 2013 — Cap. introdutorio: controle de constitucionalidade da lei estrangeira — fundamento e historico"},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:75,t:"Monaco 2013 — p. 69: normas de aplicacao imediata (Francescakis) — o que sao, como funcionam, diferenca de normas de conflito"},
+  {o:3,min:60,tipo:"fichamento",sim:false,prob:75,t:"Fichar: DIPr substancial (normas de aplicacao imediata) — Francescakis como autor de referencia, atuacao a priori, exemplos (art. 9o LINDB)"}
+]},
+{id:13,data:"11/07 (Sab)",sem:2,tipo:"fds",fase:"Semana 2 — Aprofundamento",temas:["E","A","F","D"],tarefas:[
+  {o:1,min:60,tipo:"leitura",sim:false,prob:75,t:"Dolinger/Tiburcio — Cap. II penultimo paragrafo: lei mais proxima + trecho sobre autonomia conflitual no direito brasileiro"},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:75,t:"Dolinger/Tiburcio — Cap. VII item 'normas diretas': normas substanciais e DIPr substancial — posicao dos autores"},
+  {o:3,min:60,tipo:"pratica",sim:false,prob:80,t:"Prova 2023 Q2: escrever resposta completa sobre autonomia conflitual (historico + designacao tacita vs. expressa) — 45 min cronometrados — comparar com espelho 2023"},
+  {o:4,min:60,tipo:"pratica",sim:false,prob:75,t:"Prova 2022 Q(c): escrever resposta sobre DIPr substancial citando Francescakis e distinguindo de normas de conflito — 40 min"},
+  {o:5,min:60,tipo:"leitura",sim:false,prob:80,t:"Coletanea Monaco/Loula — Cap. 1: panorama da disciplina DIPr — visao geral do estado da arte"},
+  {o:6,min:60,tipo:"fichamento",sim:false,prob:75,t:"Fichar: DIPr substancial (Francescakis) x normas de conflito + autonomia conflitual historica — sintetizar com base nas leituras de hoje e nos Temas 4, 5 e 6 da semana"}
+]},
+{id:14,data:"12/07 (Dom)",sem:2,tipo:"fds",fase:"Semana 2 — Aprofundamento",temas:["F"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:70,t:'YouTube: Canal Monaco — Modulo 5 DIPu blico — "Aula 1 – Direito Internacional Publico" (1h24) — Introducao: conceito, objeto e sujeitos do DIPu blico'},
+  {o:2,min:90,tipo:"leitura",sim:false,prob:70,t:"Dolinger/Tiburcio — Cap. introdutorio sobre relacao DIPu blico x DIPr: aproximacoes, distincoes, evolucao historica"},
+  {o:3,min:60,tipo:"aula",sim:false,prob:70,t:'YouTube: Canal Monaco — "Aula 2 – Direito Internacional Publico" (2h06, assistir 1h) — Fontes do DIPu blico'},
+  {o:4,min:90,tipo:"leitura",sim:false,prob:70,t:"Accioly/Casella 27a ed. — caps. introdutorios: conceito, fundamento e fontes do DIPu blico"},
+  {o:5,min:60,tipo:"fichamento",sim:false,prob:70,t:"Fichar: 4 eixos de distincao DIPu blico x DIPr (historico, fontes, relacoes reguladas, objetivos) — valem pontos especificos no espelho 2025"}
+]},
+{id:15,data:"13/07 (Seg)",sem:3,tipo:"util",fase:"Semana 3 — Conteudo Complementar",temas:["F","G"],tarefas:[
+  {o:1,min:60,tipo:"revisao",sim:false,prob:70,t:"Revisao rapida: reler fichamento dos 4 eixos DIPu blico x DIPr (historico, fontes, relacoes, objetivos) — preparar antes de escrever a prova 2025"},
+  {o:2,min:60,tipo:"pratica",sim:false,prob:70,t:"Prova 2025 Q(a): escrever sobre pontos de contato DIPu blico/DIPr — 40 min cronometrados"},
+  {o:3,min:60,tipo:"pratica",sim:false,prob:70,t:"Prova 2025 Q(b): escrever sobre distincao pelos 4 eixos — comparar com espelho 2025 subitem a subitem"}
+]},
+// ═══════════════════════════════════════════════════════════════════
+// SEMANA 3 (14/07–20/07) — Conteúdo Complementar + 1o Simulado
+// ═══════════════════════════════════════════════════════════════════
+{id:16,data:"14/07 (Ter)",sem:3,tipo:"util",fase:"Semana 3 — Conteudo Complementar",temas:["H"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:65,t:'YouTube: Canal Monaco — "Aula 10 – Direito Internacional Privado" (1h36) — Lei aplicavel as obrigacoes e contratos (visao de sintese do curso base)'},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:60,t:"Monaco 2019 (1a Parte) — releitura critica com foco em lacunas intersistemicas: o que sao, como surgem, como se resolvem"},
+  {o:3,min:60,tipo:"leitura",sim:false,prob:60,t:"Coletanea Monaco/Loula — Cap. 14: questao previa no DIPr — relacao com norma de conflito principal. Fichar ao final: lacunas intersistemicas vs. internas + teorias da referencia e equivalencia"}
+]},
+{id:17,data:"15/07 (Qua)",sem:3,tipo:"util",fase:"Semana 3 — Conteudo Complementar",temas:["H","E"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:60,t:'YouTube: Canal Monaco — "Aula 11 – Direito Internacional Privado" (32min) — Lei aplicavel a familia e sucessoes (visao de sintese — assistir completo)'},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:65,t:"Coletanea Monaco/Loula — Cap. 17: ordem publica internacional — conceito atual e relacao com normas de aplicacao imediata"},
+  {o:3,min:60,tipo:"leitura",sim:false,prob:50,t:"Coletanea Monaco/Loula — Cap. 21: DIPr e direitos fundamentais — constitucionalizacao do DIPr. Fichar ao final: ordem publica (Cap.17) + constitucionalizacao (Cap.21) e relacao com Monaco 2013"}
+]},
+{id:18,data:"16/07 (Qui)",sem:3,tipo:"util",fase:"Semana 3 — Conteudo Complementar",temas:["I"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:55,t:'YouTube: Canal Monaco — "Aula 12 – Direito Internacional Privado" (40min) — Aspectos processuais e jurisdicao (visao de sintese — assistir completo)'},
+  {o:2,min:60,tipo:"leitura",sim:false,prob:50,t:"Coletanea Monaco/Loula — Cap. 22: constitucionalizacao do DIPr — continuacao e aplicacoes praticas"},
+  {o:3,min:60,tipo:"leitura",sim:false,prob:50,t:"Monaco 2013 — desenvolvimento sobre controle de constitucionalidade da lei estrangeira (alem de p. 69). Fichar ao final: quando e por que o juiz pode afastar a lei estrangeira indicada pela norma de conflito"}
+]},
+{id:19,data:"17/07 (Sex)",sem:3,tipo:"util",fase:"Semana 3 — Conteudo Complementar",temas:["J"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:50,t:'YouTube: Canal Monaco — "Aula 13 – Direito Internacional Privado" (1h01) — Cooperacao juridica e homologacao (visao de sintese do curso base)'},
+  {o:2,min:60,tipo:"aula",sim:false,prob:55,t:'YouTube: Canal Monaco — Modulo 3 Aspectos Pessoais — "Tema 5 – DIPr: aspectos pessoais" (1h00) — Lei aplicavel aos aspectos pessoais do matrimonio e divorcio'},
+  {o:3,min:60,tipo:"leitura",sim:false,prob:45,t:"Coletanea Monaco/Loula — Cap. 24: regimes matrimoniais no DIPr — lei aplicavel, autonomia conflitual. Fichar ao final: lei aplicavel ao matrimonio + autonomia conflitual no regime matrimonial (Cap.15 + Cap.24)"}
+]},
+{id:20,data:"18/07 (Sab)",sem:3,tipo:"fds",fase:"Semana 3 — Conteudo Complementar",temas:["J","K"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:50,t:'YouTube: Canal Monaco — MODULO 3 (Aspectos Pessoais) — "Tema 10 – DIPr: aspectos pessoais" (25min) — Lei aplicavel aos aspectos pessoais das sucessoes. ATENCAO: buscar "Tema 10 aspectos pessoais Monaco" para nao confundir com Tema 9'},
+  {o:2,min:60,tipo:"aula",sim:false,prob:50,t:'YouTube: Canal Monaco — MODULO 2 (Aspectos Patrimoniais) — "Tema 9 – DIPr: aspectos patrimoniais" (41min) — Lei aplicavel aos regimes de bens. ATENCAO: buscar "Tema 9 aspectos patrimoniais Monaco"'},
+  {o:3,min:60,tipo:"leitura",sim:false,prob:45,t:"Coletanea Monaco/Loula — Cap. 25: sucessoes internacionais — lei aplicavel, problemas de qualificacao, posicao brasileira"},
+  {o:4,min:60,tipo:"aula",sim:false,prob:40,t:'YouTube: Canal Monaco — MODULO 4 (Aspectos Processuais) — "Tema 9 – DIPr: aspectos processuais" (1h23) — Homologacao de decisoes estrangeiras. ATENCAO: buscar "Tema 9 aspectos processuais Monaco"'},
+  {o:5,min:60,tipo:"fichamento",sim:false,prob:50,t:"Fichar: lei aplicavel as sucessoes (estatuto pessoal + lex situs para imoveis) + homologacao de decisoes estrangeiras (STJ: competencia, requisitos) — com base nas aulas de hoje"},
+  {o:6,min:60,tipo:"revisao",sim:false,prob:65,t:"Relatorio Semana 3: dominio por tema, lacunas criticas, ajuste de foco para semana 4"}
+]},
+{id:21,data:"19/07 (Dom)",sem:3,tipo:"fds",fase:"Semana 3 — Conteudo Complementar",temas:["K"],tarefas:[
+  {o:1,min:60,tipo:"aula",sim:false,prob:45,t:'YouTube: Canal Monaco — Modulo 4 Aspectos Processuais — "Tema 1 – DIPr: aspectos processuais" (38min) — Territorialidade e extraterritorialidade da jurisdicao (COMPLETO)'},
+  {o:2,min:60,tipo:"aula",sim:false,prob:45,t:'YouTube: Canal Monaco — "Tema 4 – DIPr: aspectos processuais" (1h03) — Hipoteses de competencia internacional concorrente (COMPLETO)'},
+  {o:3,min:60,tipo:"aula",sim:false,prob:45,t:'YouTube: Canal Monaco — "Tema 5 – DIPr: aspectos processuais" (1h04) — Hipoteses de competencia internacional exclusiva (COMPLETO)'},
+  {o:4,min:60,tipo:"leitura",sim:false,prob:45,t:"Dolinger/Tiburcio — Cap. sobre jurisdicao e processo internacional: competencia concorrente vs. exclusiva"},
+  {o:5,min:60,tipo:"leitura",sim:false,prob:40,t:"Coletanea Monaco/Loula — Cap. 29: mecanismos de cooperacao juridica internacional — cartas rogatorias, auxilio direto"},
+  {o:6,min:60,tipo:"fichamento",sim:false,prob:45,t:"Fichar: competencia internacional (art. 21 e 23 CPC) + cooperacao juridica internacional (Lei 13.105/2015)"}
+]},
+{id:22,data:"20/07 (Seg)",sem:4,tipo:"util",fase:"Semana 4 — Consolidacao",temas:["K","A","B"],tarefas:[
+  {o:1,min:20,tipo:"revisao",sim:false,prob:90,t:"Aquecimento pre-simulado (20 min): reler rapidamente os fichamentos de reenvio e normas de conflito — ativar a memoria antes de entrar em condicao de prova"},
+  {o:2,min:100,tipo:"simulado",sim:true,prob:99,t:"SIMULADO 1 (1h40): normas de conflito + reenvio + clausula de excecao — prova em condicoes reais (sem consulta, cronometrado — escrever como se fosse o dia 02/08)"},
+  {o:3,min:60,tipo:"pratica",sim:false,prob:90,t:"Autocorrecao rigorosa contra espelhos 2022-2024: mapear pontos perdidos por subitem — anotar lacunas especificas para os proximos dias"}
+]},
+// ═══════════════════════════════════════════════════════════════════
+// SEMANA 4 (21/07–27/07) — Consolidação + Coletânea Restante + Simulados
+// ═══════════════════════════════════════════════════════════════════
+{id:23,data:"21/07 (Ter)",sem:4,tipo:"util",fase:"Semana 4 — Consolidacao",temas:["B","C"],tarefas:[
+  {o:1,min:60,tipo:"revisao",sim:false,prob:90,t:"Revisao ativa Reenvio: cobrir fichas e recuperar os 4 modelos + art. 16 LINDB de memoria — testar sem consulta"},
+  {o:2,min:60,tipo:"pratica",sim:false,prob:90,t:"Escrever resposta completa sobre reenvio (45 min cronometrados) — autocorrigir vs. espelho 2024 subitem a subitem"},
+  {o:3,min:60,tipo:"pratica",sim:false,prob:85,t:"Criar enunciado ficticio inedito sobre reenvio e responder em 30 min — simular variacao que a banca ainda nao usou"}
+]},
+{id:24,data:"22/07 (Qua)",sem:4,tipo:"util",fase:"Semana 4 — Consolidacao",temas:["D","C"],tarefas:[
+  {o:1,min:60,tipo:"revisao",sim:false,prob:85,t:"Revisao ativa: clausula de excecao + autonomia conflitual — testar vocabulario tecnico exato sem consulta"},
+  {o:2,min:60,tipo:"pratica",sim:false,prob:85,t:"Reescrever Q2 da prova 2023 (autonomia conflitual) com todas as melhorias — comparar com espelho"},
+  {o:3,min:60,tipo:"pratica",sim:false,prob:80,t:"Criar enunciado ficticio sobre autonomia conflitual com angulo diferente (ex: designacao tacita em contrato digital) — responder 30 min"}
+]},
+{id:25,data:"23/07 (Qui)",sem:4,tipo:"util",fase:"Semana 4 — Consolidacao",temas:["E","F"],tarefas:[
+  {o:1,min:60,tipo:"revisao",sim:false,prob:75,t:"Revisao ativa: DIPr substancial (Francescakis, atuacao a priori, exemplos) + DIPu blico x DIPr (4 eixos do espelho 2025)"},
+  {o:2,min:60,tipo:"pratica",sim:false,prob:75,t:"Simular questao cruzando DIPr substancial com DIPu blico x DIPr num unico enunciado ficticio — 45 min"},
+  {o:3,min:60,tipo:"pratica",sim:false,prob:70,t:"Releitura critica do espelho 2025: identificar exatamente quais expressoes e autores valeram pontos — anotar para memorizar"}
+]},
+{id:26,data:"24/07 (Sex)",sem:4,tipo:"util",fase:"Semana 4 — Consolidacao",temas:["A","G"],tarefas:[
+  {o:1,min:60,tipo:"revisao",sim:false,prob:90,t:"Revisao ativa: normas de conflito, objeto da disciplina, elemento de conexao — testar definicao de Monaco 2019 p.59 nota 92 de memoria"},
+  {o:2,min:60,tipo:"pratica",sim:false,prob:90,t:"Escrever Q(a) e Q(b) da prova 2022 (normas indiretas + excecionalidade das diretas) — autocorrigir vs. espelho 2022"},
+  {o:3,min:60,tipo:"pratica",sim:false,prob:85,t:"Criar enunciado ficticio sobre objeto da disciplina sob perspectiva comparada (tradicao francesa vs. germanica) — responder 30 min"}
+]},
+{id:27,data:"25/07 (Sab)",sem:4,tipo:"fds",fase:"Semana 4 — Consolidacao",temas:["H","I","A","B"],tarefas:[
+  {o:1,min:90,tipo:"revisao",sim:false,prob:65,t:"Revisao ativa: lacunas intersistemicas + constitucionalidade da lei estrangeira — repassar argumentos mais sofisticados sem consulta"},
+  {o:2,min:90,tipo:"pratica",sim:false,prob:65,t:"Criar e responder questao ficticia sobre controle constitucional da lei estrangeira — 40 min cronometrados — autocorrigir"},
+  {o:3,min:60,tipo:"leitura",sim:false,prob:70,t:"Coletanea Monaco/Loula — releitura seletiva caps. 9 e 14 (autonomia conflitual UE + questao previa) — focar nos argumentos que usaria na prova"},
+  {o:4,min:60,tipo:"leitura",sim:false,prob:65,t:"Coletanea Monaco/Loula — releitura seletiva caps. 22, 25 e 29 (constitucionalizacao + sucessoes + cooperacao) — anotar 1 argumento central de cada"},
+  {o:5,min:60,tipo:"leitura",sim:false,prob:70,t:"Coletanea Monaco/Loula — releitura seletiva cap. 10 (regimes matrimoniais e autonomia conflitual na UE) — conexao com cap. 15 (Patrao)"}
+]},
+{id:28,data:"26/07 (Dom)",sem:4,tipo:"fds",fase:"Semana 4 — Consolidacao",temas:["A","B","C","D","E","F"],tarefas:[
+  {o:1,min:150,tipo:"simulado",sim:true,prob:99,t:"SIMULADO GERAL 1 (2h30): prova completa em condicoes reais — escolher 1 tema e desenvolver como 10 pontos — sem consulta, cronometrado"},
+  {o:2,min:70,tipo:"pratica",sim:false,prob:90,t:"Autocorrecao rigorosa contra todos os espelhos — mapear subitem a subitem o que perdeu e anotar exatamente a expressao que valeria ponto"},
+  {o:3,min:80,tipo:"revisao",sim:false,prob:80,t:"Identificar os 3 pontos mais frageis revelados pelo simulado — esses viram prioridade absoluta da semana 5"},
+  {o:4,min:60,tipo:"revisao",sim:false,prob:70,t:"Comparar desempenho do Simulado 1 com o Simulado 2 anterior — medir evolucao real e ajustar estrategia para a prova final"}
+]},
+{id:29,data:"27/07 (Seg)",sem:4,tipo:"util",fase:"Semana 4 — Consolidacao",temas:["A","B","C","D"],tarefas:[
+  {o:1,min:60,tipo:"revisao",sim:false,prob:70,t:"Relatorio Semana 4: nota no Simulado 1, confianca por tema (0-10), organizar fichas por probabilidade — preparar foco para semana 5"},
+  {o:2,min:60,tipo:"pratica",sim:false,prob:85,t:"Releitura seletiva espelhos 2022-2025: focar nos subitens onde voce perdeu pontos — anotar expressoes exatas que valem pontos"},
+  {o:3,min:60,tipo:"pratica",sim:false,prob:85,t:"Reescrever a resposta do Simulado 1 incorporando as correcoes — comparar versao nova com velha e medir evolucao real"}
+]},
+// ═══════════════════════════════════════════════════════════════════
+// SEMANA 5 (28/07–02/08) — Sprint Final + Reta Final
+// ═══════════════════════════════════════════════════════════════════
+{id:30,data:"28/07 (Ter)",sem:5,tipo:"util",fase:"Semana 5 — Sprint Final",temas:["B","C"],tarefas:[
+  {o:1,min:90,tipo:"revisao",sim:false,prob:90,t:"Revisao intensiva: reenvio + clausula de excecao — sintese comparativa em 1 pagina propria"},
+  {o:2,min:90,tipo:"pratica",sim:false,prob:90,t:"Treino: resposta sobre reenvio em 45 min sem consulta — rigor na terminologia e nas citacoes de Monaco 2019"}
+]},
+{id:31,data:"29/07 (Qua)",sem:5,tipo:"util",fase:"Semana 5 — Sprint Final",temas:["A","D"],tarefas:[
+  {o:1,min:90,tipo:"revisao",sim:false,prob:90,t:"Revisao intensiva: normas de conflito + autonomia conflitual — vocabulario tecnico exato, sem vacilar nos nomes dos autores"},
+  {o:2,min:90,tipo:"pratica",sim:false,prob:90,t:"Treino: resposta integrando normas de conflito e autonomia conflitual em 45 min — citar Dolinger, Monaco, Patrao por nome"}
+]},
+{id:32,data:"30/07 (Qui)",sem:5,tipo:"util",fase:"Semana 5 — Sprint Final",temas:["E","F"],tarefas:[
+  {o:1,min:90,tipo:"revisao",sim:false,prob:75,t:"Revisao: DIPr substancial + DIPu blico × DIPr — reler fichas + pontos criticos dos espelhos 2022 e 2025"},
+  {o:2,min:90,tipo:"pratica",sim:false,prob:75,t:"Simular questao cruzada (provavel para 2026): DIPr substancial + DIPu blico × DIPr num mesmo enunciado — 45 min"}
+]},
+{id:33,data:"31/07 (Sex)",sem:5,tipo:"util",fase:"Semana 5 — Sprint Final",temas:["A","B","C","D"],tarefas:[
+  {o:1,min:120,tipo:"simulado",sim:true,prob:99,t:"SIMULADO GERAL 2 (2h): prova completa em condicoes reais — nenhuma consulta, cronometrado"},
+  {o:2,min:60,tipo:"pratica",sim:false,prob:90,t:"Autocorrecao + comparacao com espelhos — medir evolucao vs. Simulado Geral 1"}
+]},
+{id:34,data:"01/08 (Sab)",sem:5,tipo:"fds",fase:"Semana 5 — Sprint Final",temas:["A","B","C","D"],tarefas:[
+  {o:1,min:60,tipo:"revisao",sim:false,prob:90,t:"Flash cards finais: cobrir todas as fichas e recuperar de memoria — 5 min por tema, sem consulta"},
+  {o:2,min:60,tipo:"revisao",sim:false,prob:85,t:"Reler espelhos 2023 e 2024 pela ultima vez — gravar criterios de pontuacao de cada subitem"},
+  {o:3,min:60,tipo:"pratica",sim:false,prob:90,t:"Simulado rapido (45 min): escrever sobre o tema que voce se sente mais fraco — sem consulta, com rigor de citacao"},
+  {o:4,min:30,tipo:"revisao",sim:false,prob:75,t:"Ler em voz alta os argumentos principais dos 4 temas de nivel 1 — fixacao ativa de memoria"},
+  {o:5,min:30,tipo:"revisao",sim:false,prob:70,t:"Logistica final: confirmar local da prova, horario de chegada, caneta azul ou preta — portoes fecham no horario"}
+]},
+{id:35,data:"02/08 (Dom)",sem:5,tipo:"fds",fase:"Semana 5 — Reta Final",temas:[],tarefas:[
+  {o:1,min:60,tipo:"revisao",sim:false,prob:70,t:"Leitura tranquila e leve dos fichamentos — sem pressao, apenas reforco do que ja esta solido"},
+  {o:2,min:30,tipo:"revisao",sim:false,prob:60,t:"Logistica: confirmar local da prova, horario de chegada, material permitido (caneta azul ou preta) — portoes fecham no horario"},
+  {o:3,min:30,tipo:"revisao",sim:false,prob:60,t:"Descanso: hidratacao, alimentacao leve — PROVA as 13h hoje"}
+]}
+];
 // ─── ESTADO GLOBAL ────────────────────────────────────────────────────────────
-var STORAGE_KEY = "dipr_v5";
+var STORAGE_KEY = "dipr_v7";
 var progresso = {};      // {diaId: [bool, bool, ...]}
 var remanejos = {};      // {diaId: [{tarefaOrigem, tarefaData, ...}]}
 var cargaExtra = {};     // {diaId: minutos_extras_adicionados}
@@ -505,7 +509,7 @@ function getCargaDia(diaId) {
 
 function getLimiteDia(diaId) {
   var base = getDia(diaId);
-  var lim = CARGA_BASE[base.tipo] || 180;
+  var lim = CARGA_BASE[base.tipo] || 210;
   if (cargaExtra[diaId]) lim += cargaExtra[diaId];
   return lim;
 }
@@ -572,7 +576,7 @@ function proximoFDS(diaId) {
 // ─── REMANEJO ────────────────────────────────────────────────────────────────
 function verificarRemanejo(diaId) {
   var hoje = new Date();
-  var inicio = new Date("2026-06-23");
+  var inicio = new Date("2026-06-29");
   var diaNum = Math.floor((hoje - inicio) / 86400000) + 1;
   // so verificar dias passados
   if (diaId >= diaNum) return false;
@@ -1058,7 +1062,7 @@ function remanejarPara(tarefas, destDiaId, origemData) {
 carregar();
 
 var hoje2 = new Date();
-var inicio2 = new Date("2026-06-23");
+var inicio2 = new Date("2026-06-29");
 var diff2 = Math.floor((hoje2 - inicio2) / 86400000);
 diaAtivo = Math.max(1, Math.min(diff2 + 1, 41));
 var diaIni2 = getDia(diaAtivo);
@@ -1071,7 +1075,7 @@ function updateStrip() {
   document.getElementById("strip-txt").textContent = "Dia ativo: " + dh.data + "  |  " + dh.fase;
   // Verificar se ha remanejo pendente em dias passados
   var temPendente = false;
-  var diaNum = Math.floor((new Date() - new Date("2026-06-23")) / 86400000) + 1;
+  var diaNum = Math.floor((new Date() - new Date("2026-06-29")) / 86400000) + 1;
   for (var i = 1; i < diaNum && i <= 41; i++) {
     if (verificarRemanejo(i)) { temPendente = true; break; }
   }
@@ -1117,7 +1121,7 @@ function renderRoteiro() {
   html += '</div>';
 
   // alertas
-  var diaNum = Math.floor((new Date()-new Date("2026-06-23"))/86400000)+1;
+  var diaNum = Math.floor((new Date()-new Date("2026-06-29"))/86400000)+1;
   if (verificarRemanejo(diaAtivo)) {
     html += '<div class="alert-banner alert-warning"><span class="alert-icon">⚠️</span><span><strong>Tarefas pendentes neste dia.</strong> Clique em "Remanejar" para redistribui-las nos proximos dias.</span><button onclick="abrirModal('+diaAtivo+')" style="margin-left:8px;background:#d97706;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0">Remanejar</button></div>';
   }
